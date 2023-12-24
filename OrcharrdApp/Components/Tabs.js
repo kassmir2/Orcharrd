@@ -14,7 +14,7 @@ function MyTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerTitle: (props) => (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={styles.headerContainer}>
             <Image
               source={require("../assets/Orcharrd_Logo.png")}
               style={{ width: 60, height: 40, marginLeft: 5 }}
@@ -73,3 +73,11 @@ function MyTabs() {
 }
 
 export default MyTabs;
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start", // Align items from the start (left) of the container
+  },
+});
