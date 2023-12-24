@@ -16,9 +16,9 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   horizontalLine: {
-    borderBottomColor: "black", // Change color as needed
-    borderBottomWidth: 1, // Change thickness as needed
-    marginVertical: 10, // Adjust spacing as needed
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    marginVertical: 10,
   },
   container: {
     flex: 1,
