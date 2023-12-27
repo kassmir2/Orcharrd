@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -7,10 +7,11 @@ import SwipeScreen from "./SwipeScreen.js";
 import ProfileScreen from "./ProfileScreen.js";
 import ChatScreen from "./ChatScreen.js";
 import StartScreen from "./StartScreen.js";
-
+import { connect } from "react-redux";
 const Tab = createBottomTabNavigator();
-let isLoggedIn = true;
-function MyTabs() {
+
+function MyTabs(props) {
+  const { IsLoggedIn } = props;
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -42,7 +43,7 @@ function MyTabs() {
         ],
       })}
     >
-      {isLoggedIn ? (
+      {IsLoggedIn ? (
         <Tab.Group>
           <Tab.Screen
             name="Swipe"
@@ -89,7 +90,11 @@ function MyTabs() {
   );
 }
 
-export default MyTabs;
+const mapStateToProps = (state) => ({
+  IsLoggedIn: state.IsLoggedIn,
+});
+
+export default connect(mapStateToProps)(MyTabs);
 
 const styles = StyleSheet.create({
   headerContainer: {

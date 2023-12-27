@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,55 +9,79 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { connect } from "react-redux";
 
-const LoginScreen = (route) => {
+const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setIsLoggedIn } = props;
   const [errors, setErrors] = useState({
     username: "",
     email: "",
     password: "",
   });
-  navigation = useNavigation();
-  //const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async () => {
+    // Validate data and show errors
+    let hasErrors = false;
+    const errorObj = {};
+    if (!username) {
+      hasErrors = true;
+      errorObj.username = "Username is required";
+    }
+    if (!email) {
+      hasErrors = true;
+      errorObj.email = "Email is required";
+    }
+    if (!password) {
+      hasErrors = true;
+      errorObj.password = "Password is required";
+    }
+    setErrors(errorObj);
 
-  // const handleSubmit = async () => {
-  //   // Validate data and show errors
-  //   let hasErrors = false;
-  //   const errorObj = {};
-  //   if (!username) {
-  //     hasErrors = true;
-  //     errorObj.username = "Username is required";
-  //   }
-  //   if (!email) {
-  //     hasErrors = true;
-  //     errorObj.email = "Email is required";
-  //   }
-  //   if (!password) {
-  //     hasErrors = true;
-  //     errorObj.password = "Password is required";
-  //   }
-  //   setErrors(errorObj);
+    if (hasErrors) {
+      alert(errorObj.username);
+      alert(errorObj.email);
+      alert(errorObj.password);
+    }
 
-  //   if (hasErrors) return;
+    // Set loading state and submit data
+    setLoading(true);
 
-  //   // Set loading state and submit data
-  //   setLoading(true);
-  //   try {
-  //     // Your logic to create user profile using your chosen data storage solution
-  //     // Replace this with your actual API call or storage method
-  //     await fetch("https://example.com/api/profiles", {
-  //       method: "POST",
-  //       body: JSON.stringify({ username, email, password),
-  //     });
-  //     setLoading(false);
-  //     // Show success message or navigate to next screen
-  //   } catch (error) {
-  //     setLoading(false);
-  //     // Handle any errors and display message
-  //   }
-  // };
+    try {
+      // Your logic to create user profile using your chosen data storage solution
+      // Replace this with your actual API call or storage method
+      //console.log("We got this far");
+      const response = await fetch("http://192.168.1.21:34000/Login", {
+        method: "POST",
+        body: JSON.stringify({ username, email, password }),
+      });
+      //console.log(response);
+      if (response.ok) {
+        // If response status code is 200-299
+        // Successful login
+
+        setLoading(false);
+        setIsLoggedIn(true);
+        console.log("should be logging in");
+      } else if (response.status == 400) {
+        // Handle login failure
+        setLoading(false);
+
+        alert("Login failed: No Users Matched Those Credentials");
+      } else {
+        setLoading(false);
+
+        alert("Login failed: Unknown Error");
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      // Handle any errors and display message
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -95,11 +119,7 @@ const LoginScreen = (route) => {
         error={errors.password}
         style={styles.input}
       />
-      <Button
-        title={"Submit"}
-        //onPress={handleSubmit}
-        color="blue"
-      />
+      <Button title={"Submit"} onPress={handleSubmit} color="blue" />
     </View>
   );
 };
@@ -142,4 +162,12 @@ const styles = StyleSheet.create({
     color: "#444",
   },
 });
-export default LoginScreen;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setIsLoggedIn: (isLoggedIn) =>
+      dispatch({ type: "SET_IS_LOGGED_IN", isLoggedIn }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LoginScreen);

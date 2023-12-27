@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./LS_subComponents/LoginScreen";
 import ChoiceScreen from "./LS_subComponents/ChoiceScreen";
 import CreateAccScreen from "./LS_subComponents/CreateAccScreen";
+
 const Stack = createNativeStackNavigator();
 const StartScreen = (route) => {
   return (
