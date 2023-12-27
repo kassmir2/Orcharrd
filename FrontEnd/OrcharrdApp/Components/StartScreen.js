@@ -3,25 +3,30 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import PlaceScreen from "./SS_subComponents/PlaceScreen";
-import PeopleScreen from "./SS_subComponents/PeopleScreen";
-
+import LoginScreen from "./LS_subComponents/LoginScreen";
+import ChoiceScreen from "./LS_subComponents/ChoiceScreen";
+import CreateAccScreen from "./LS_subComponents/CreateAccScreen";
 const Stack = createNativeStackNavigator();
-const SwipeScreen = (route) => {
+const StartScreen = (route) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="PlaceScreen"
-        component={PlaceScreen}
+        name="ChoiceScreen"
+        component={ChoiceScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="PeopleScreen"
-        component={PeopleScreen}
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CreateAccScreen"
+        component={CreateAccScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
 };
 
-export default SwipeScreen;
+export default StartScreen;
