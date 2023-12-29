@@ -8,9 +8,11 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import RNFetchBlob from "rn-fetch-blob";
 
 const CreateAccScreen = (props) => {
   const [username, setUsername] = useState("");
@@ -27,32 +29,27 @@ const CreateAccScreen = (props) => {
   const { setIsLoggedIn } = props;
   const [loading, setLoading] = useState(false);
   const [picOne, setPicOne] = useState(null);
-  const options = {
-    mediaType: "photo",
-    quality: 0.5,
-    // other options...
-  };
-  const handleImagePicker = () => {
-    launchCamera(options, (response) => {
-      // Use launchImageLibrary to open image gallery
-      console.log("Response = ", response);
-
+  const [picTwo, setPicTwo] = useState(null);
+  const [picThree, setPicThree] = useState(null);
+  const [picFour, setPicFour] = useState(null);
+  const openImagePicker = (func) => {
+    const options = {
+      mediaType: "photo",
+    };
+    launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log("User cancelled image picker");
       } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
-      } else if (response.customButton) {
-        console.log("User tapped custom button: ", response.customButton);
+        console.log("Image picker error: ", response.error);
       } else {
-        const source = { uri: response.uri };
-        setPicOne(response.uri);
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        console.log(source);
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        func(imageUri);
+        //console.log("Image Uri: ", imageUri);
+        //console.log("response: ", response);
       }
     });
   };
+
   const handleSubmit = async () => {
     // Validate data and show errors
     let hasErrors = false;
@@ -86,34 +83,62 @@ const CreateAccScreen = (props) => {
     // Set loading state and submit data
     setLoading(true);
     try {
-      // Your logic to create user profile using your chosen data storage solution
-      // Replace this with your actual API call or storage method
-      const response = await fetch("http://192.168.1.21:34000/createProfile", {
-        method: "POST",
-        body: JSON.stringify({ username, email, password, name, bio }),
-      });
-      if (response.ok) {
-        // If response status code is 200-299
-        // Successful login
+      const response = await RNFetchBlob.fetch(
+        "POST",
+        "http://192.168.1.21:34000/createProfile",
+        {
+          "Content-Type": "multipart/form-data",
+        },
+        [
+          // Append text data
+          { name: "username", data: username },
+          { name: "email", data: email },
+          { name: "password", data: password },
+          { name: "name", data: name },
+          { name: "bio", data: bio },
 
+          // Append image data
+          picOne && {
+            name: "picOne",
+            filename: "picOne.jpg",
+            data: RNFetchBlob.wrap(picOne),
+          },
+          picTwo && {
+            name: "picTwo",
+            filename: "picTwo.jpg",
+            data: RNFetchBlob.wrap(picTwo),
+          },
+          picThree && {
+            name: "picThree",
+            filename: "picThree.jpg",
+            data: RNFetchBlob.wrap(picThree),
+          },
+          picFour && {
+            name: "picFour",
+            filename: "picFour.jpg",
+            data: RNFetchBlob.wrap(picFour),
+          },
+        ]
+      );
+
+      // Handle the response
+      if (response.respInfo.status === 200) {
+        // Successful login
         setLoading(false);
         setIsLoggedIn(true);
         console.log("should be logging in");
-      } else if (response.status == 401) {
+      } else if (response.respInfo.status === 401) {
         // Handle login failure
         setLoading(false);
-
         alert("A user already exists with that username");
-      } else if (response.status == 402) {
+      } else if (response.respInfo.status === 402) {
         setLoading(false);
-
         alert("A user already exists with that email");
       } else {
         setLoading(false);
-
         alert("Login failed: Unknown Error");
       }
-      // Show success message or navigate to next screen
+      // Show success message or navigate to the next screen
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -121,7 +146,7 @@ const CreateAccScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
         <Image
           source={require("../../assets/Orcharrd_Logo.png")}
@@ -181,20 +206,71 @@ const CreateAccScreen = (props) => {
         <Image
           source={{ uri: picOne }}
           style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
+          resizeMode="contain"
         />
       )}
 
-      <TouchableOpacity onPress={handleImagePicker}>
-        <Text style={{ color: "blue", marginTop: 10 }}>
+      <TouchableOpacity
+        style={styles.addImage}
+        onPress={() => openImagePicker(setPicOne)}
+      >
+        <Text style={{ color: "black", marginTop: 10 }}>
           Pick an image from camera roll
         </Text>
       </TouchableOpacity>
+      {picTwo && (
+        <Image
+          source={{ uri: picTwo }}
+          style={{ width: 100, height: 200, borderRadius: 5, marginTop: 10 }}
+          resizeMode="contain"
+        />
+      )}
 
+      <TouchableOpacity
+        style={styles.addImage}
+        onPress={() => openImagePicker(setPicTwo)}
+      >
+        <Text style={{ color: "black", marginTop: 10 }}>
+          Pick an image from camera roll
+        </Text>
+      </TouchableOpacity>
+      {picThree && (
+        <Image
+          source={{ uri: picThree }}
+          style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
+          resizeMode="contain"
+        />
+      )}
+
+      <TouchableOpacity
+        style={styles.addImage}
+        onPress={() => openImagePicker(setPicThree)}
+      >
+        <Text style={{ color: "black", marginTop: 10 }}>
+          Pick an image from camera roll
+        </Text>
+      </TouchableOpacity>
+      {picFour && (
+        <Image
+          source={{ uri: picFour }}
+          style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
+          resizeMode="contain"
+        />
+      )}
+
+      <TouchableOpacity
+        style={styles.addImage}
+        onPress={() => openImagePicker(setPicFour)}
+      >
+        <Text style={{ color: "black", marginTop: 10 }}>
+          Pick an image from camera roll
+        </Text>
+      </TouchableOpacity>
       {/* Image upload components for profile picture and other photos (optional) */}
 
       {/* Submit button and loading indicator */}
       <Button title={"Create Profile"} onPress={handleSubmit} color="blue" />
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
@@ -223,10 +299,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   backButton: {
-    position: "absolute", // Position absolutely within the container
-    top: 140,
-    left: 15,
+    position: "relative",
+    top: 35,
+    left: 0,
     padding: 10,
+    width: 60,
+
     backgroundColor: "#f0f0f0", // Light grey background
     borderRadius: 5,
     zIndex: 1,
@@ -240,6 +318,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  addImage: {
+    backgroundColor: "lightgrey",
+    marginTop: "20",
+    padding: 20,
   },
 });
 

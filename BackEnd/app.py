@@ -5,7 +5,6 @@ import os
 import io
 import boto3
 import base64
-import dotenv
 import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
