@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import RNFetchBlob from "rn-fetch-blob";
 
 const CreateAccScreen = (props) => {
   const [username, setUsername] = useState("");
@@ -83,55 +82,58 @@ const CreateAccScreen = (props) => {
     // Set loading state and submit data
     setLoading(true);
     try {
-      const response = await RNFetchBlob.fetch(
-        "POST",
-        "http://192.168.1.21:34000/createProfile",
-        {
-          "Content-Type": "multipart/form-data",
-        },
-        [
-          // Append text data
-          { name: "username", data: username },
-          { name: "email", data: email },
-          { name: "password", data: password },
-          { name: "name", data: name },
-          { name: "bio", data: bio },
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("name", name);
+      formData.append("bio", bio);
 
-          // Append image data
-          picOne && {
-            name: "picOne",
-            filename: "picOne.jpg",
-            data: RNFetchBlob.wrap(picOne),
-          },
-          picTwo && {
-            name: "picTwo",
-            filename: "picTwo.jpg",
-            data: RNFetchBlob.wrap(picTwo),
-          },
-          picThree && {
-            name: "picThree",
-            filename: "picThree.jpg",
-            data: RNFetchBlob.wrap(picThree),
-          },
-          picFour && {
-            name: "picFour",
-            filename: "picFour.jpg",
-            data: RNFetchBlob.wrap(picFour),
-          },
-        ]
-      );
+      // Append image data
+      picOne &&
+        formData.append("picOne", {
+          uri: picOne,
+          type: "image/jpeg",
+          name: "picOne.jpg",
+        });
+      picTwo &&
+        formData.append("picTwo", {
+          uri: picTwo,
+          type: "image/jpeg",
+          name: "picTwo.jpg",
+        });
+      picThree &&
+        formData.append("picThree", {
+          uri: picThree,
+          type: "image/jpeg",
+          name: "picThree.jpg",
+        });
+      picFour &&
+        formData.append("picFour", {
+          uri: picFour,
+          type: "image/jpeg",
+          name: "picFour.jpg",
+        });
+
+      const response = await fetch("http://192.168.1.21:34000/createProfile", {
+        method: "POST",
+        body: formData,
+        headers: {
+          // Include any additional headers as needed
+        },
+      });
 
       // Handle the response
-      if (response.respInfo.status === 200) {
+      if (response.ok) {
         // Successful login
         setLoading(false);
         setIsLoggedIn(true);
         console.log("should be logging in");
-      } else if (response.respInfo.status === 401) {
+      } else if (response.status === 401) {
         // Handle login failure
         setLoading(false);
         alert("A user already exists with that username");
-      } else if (response.respInfo.status === 402) {
+      } else if (response.status === 402) {
         setLoading(false);
         alert("A user already exists with that email");
       } else {
@@ -205,8 +207,8 @@ const CreateAccScreen = (props) => {
       {picOne && (
         <Image
           source={{ uri: picOne }}
-          style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
-          resizeMode="contain"
+          style={{ width: 100, height: 180, borderRadius: 5, marginTop: 10 }}
+          resizeMode="stretch"
         />
       )}
 
@@ -221,8 +223,8 @@ const CreateAccScreen = (props) => {
       {picTwo && (
         <Image
           source={{ uri: picTwo }}
-          style={{ width: 100, height: 200, borderRadius: 5, marginTop: 10 }}
-          resizeMode="contain"
+          style={{ width: 100, height: 180, borderRadius: 5, marginTop: 10 }}
+          resizeMode="stretch"
         />
       )}
 
@@ -237,8 +239,8 @@ const CreateAccScreen = (props) => {
       {picThree && (
         <Image
           source={{ uri: picThree }}
-          style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
-          resizeMode="contain"
+          style={{ width: 100, height: 180, borderRadius: 5, marginTop: 10 }}
+          resizeMode="stretch"
         />
       )}
 
@@ -253,8 +255,8 @@ const CreateAccScreen = (props) => {
       {picFour && (
         <Image
           source={{ uri: picFour }}
-          style={{ width: 100, height: 100, borderRadius: 50, marginTop: 10 }}
-          resizeMode="contain"
+          style={{ width: 100, height: 180, borderRadius: 5, marginTop: 10 }}
+          resizeMode="stretch"
         />
       )}
 
@@ -266,10 +268,17 @@ const CreateAccScreen = (props) => {
           Pick an image from camera roll
         </Text>
       </TouchableOpacity>
-      {/* Image upload components for profile picture and other photos (optional) */}
-
-      {/* Submit button and loading indicator */}
-      <Button title={"Create Profile"} onPress={handleSubmit} color="blue" />
+      <TouchableOpacity
+        style={{
+          backgroundColor: "lightgrey",
+          marginTop: 10,
+          padding:20,
+          marginBottom: 40,
+        }}
+        onPress={handleSubmit}
+      >
+        <Text style={styles.backButtonText}>Submit</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -321,7 +330,7 @@ const styles = StyleSheet.create({
   },
   addImage: {
     backgroundColor: "lightgrey",
-    marginTop: "20",
+    marginTop: 20,
     padding: 20,
   },
 });

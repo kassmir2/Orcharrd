@@ -9,6 +9,7 @@ import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import sys
+from werkzeug.datastructures import ImmutableMultiDict
 
 app = Flask(__name__)
 uri = (
@@ -58,9 +59,10 @@ def Login():
 
 @app.route("/createProfile", methods=["POST"])
 def createProfile():
+    print(request.form.to_dict())
     try:
         # Assuming the request body contains JSON data
-        data = json.loads(request.data.decode("UTF-8"))
+        data = request.form.to_dict()
         username = data["username"]
         email = data["email"]
         queryuser = {"username": username}
