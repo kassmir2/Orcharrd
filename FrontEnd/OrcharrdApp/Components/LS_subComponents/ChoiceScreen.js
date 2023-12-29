@@ -14,6 +14,11 @@ const ChoiceScreen = () => {
   navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../../assets/Orcharrd_Logo.png")}
+        style={{ width: 260, height: 170, marginBottom: 50 }}
+        resizeMode="stretch"
+      />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -39,7 +44,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center", // Center content vertically
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   buttonContainer: {
     flexDirection: "column",

@@ -6,12 +6,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 import SwipeScreen from "./SwipeScreen.js";
 import ProfileScreen from "./ProfileScreen.js";
 import ChatScreen from "./ChatScreen.js";
-import StartScreen from "./StartScreen.js";
 import { connect } from "react-redux";
 const Tab = createBottomTabNavigator();
 
-function MyTabs(props) {
-  const { IsLoggedIn } = props;
+function Home(props) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -20,6 +18,7 @@ function MyTabs(props) {
             <Image
               source={require("../assets/Orcharrd_Logo.png")}
               style={{ width: 60, height: 40, marginLeft: 5 }}
+              resizeMode="stretch"
             />
             <Text
               style={{
@@ -43,58 +42,40 @@ function MyTabs(props) {
         ],
       })}
     >
-      {IsLoggedIn ? (
-        <Tab.Group>
-          <Tab.Screen
-            name="Swipe"
-            component={SwipeScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Icon name="home" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Matches"
-            component={ChatScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Icon name="chatbubbles" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Icon name="person" color={color} size={size} />
-              ),
-            }}
-          />
-        </Tab.Group>
-      ) : (
-        <Tab.Group>
-          <Tab.Screen
-            name="Start"
-            component={StartScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Icon name="person" color={color} size={size} />
-              ),
-            }}
-          />
-        </Tab.Group>
-      )}
+      <Tab.Screen
+        name="Swipe"
+        component={SwipeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Matches"
+        component={ChatScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="chatbubbles" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="person" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
-const mapStateToProps = (state) => ({
-  IsLoggedIn: state.IsLoggedIn,
-});
 
-export default connect(mapStateToProps)(MyTabs);
+
+export default Home;
 
 const styles = StyleSheet.create({
   headerContainer: {

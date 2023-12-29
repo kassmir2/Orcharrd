@@ -29,7 +29,7 @@ userInfo = db.UserInfo
 
 
 @app.route("/Login", methods=["POST"])
-def createProfile():
+def Login():
     try:
         # Assuming the request body contains JSON data
         data = json.loads(request.data.decode("UTF-8"))
@@ -40,14 +40,16 @@ def createProfile():
         username = data["username"]
 
         # Use the username in the query
-        query = {"username": username}
-
-        result = userInfo.find_one(query)
-        if result is None:
+        queryuser = {"username": username}
+        queryemail = {"email": username}
+        resultuser = userInfo.find_one(queryuser)
+        resultemail = userInfo.find_one(queryemail)
+        if resultuser is None and resultemail is None:
             return "No users match those credentials", 400
-        elif result["password"] != data["password"]:
+        elif resultemail is not None and resultemail["password"] != data["password"]:
             return {"statustext": "No users match those credentials"}, 400
-
+        elif resultuser is not None and resultuser["password"] != data["password"]:
+            return {"statustext": "No users match those credentials"}, 400
         return "", 200
 
     except Exception as e:
@@ -55,17 +57,24 @@ def createProfile():
         return "Error processing request", 500
 
 
-# @app.route("/createProfile", methods=["POST"])
-# def createProfile():
-#     profile = {
-#         "username": "bro",
-#         "email": "bro@gmail.com",
-#         "password": "temp",
-#         "name": "Angie",
-#         "bio": "Angie's world",
-#         "Images": [999999, 1111],
-#     }
+@app.route("/createProfile", methods=["POST"])
+def createProfile():
+    try:
+        # Assuming the request body contains JSON data
+        data = json.loads(request.data.decode("UTF-8"))
+        username = data["username"]
+        email = data["email"]
+        queryuser = {"username": username}
+        queryemail = {"email": email}
+        resultuser = userInfo.find_one(queryuser)
+        resultemail = userInfo.find_one(queryemail)
+        if resultuser is not None:
+            return "A user already exists with that username", 401
+        if resultemail is not None:
+            return "A user already exists with that email", 402
+        result = userInfo.insert_one(data)
+        return "", 200
 
-#     result = userInfo.insert_one(profile)
-#     doc_id = result.inserted_id
-#     print(f"The profiles ID is {doc_id}")
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        return "Error processing request", 500

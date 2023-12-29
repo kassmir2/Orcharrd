@@ -13,12 +13,10 @@ import { connect } from "react-redux";
 
 const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setIsLoggedIn } = props;
   const [errors, setErrors] = useState({
     username: "",
-    email: "",
     password: "",
   });
   const navigation = useNavigation();
@@ -29,11 +27,7 @@ const LoginScreen = (props) => {
     const errorObj = {};
     if (!username) {
       hasErrors = true;
-      errorObj.username = "Username is required";
-    }
-    if (!email) {
-      hasErrors = true;
-      errorObj.email = "Email is required";
+      errorObj.username = "Username/Email is required";
     }
     if (!password) {
       hasErrors = true;
@@ -43,8 +37,8 @@ const LoginScreen = (props) => {
 
     if (hasErrors) {
       alert(errorObj.username);
-      alert(errorObj.email);
       alert(errorObj.password);
+      return;
     }
 
     // Set loading state and submit data
@@ -56,7 +50,7 @@ const LoginScreen = (props) => {
       //console.log("We got this far");
       const response = await fetch("http://192.168.1.21:34000/Login", {
         method: "POST",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, password }),
       });
       //console.log(response);
       if (response.ok) {
@@ -85,6 +79,14 @@ const LoginScreen = (props) => {
 
   return (
     <View style={styles.container}>
+      {/*header container*/}
+      <View style={styles.headerContainer}>
+        <Image
+          source={require("../../assets/Orcharrd_Logo.png")}
+          style={{ width: 240, height: 80, marginTop: 40 }}
+          resizeMode="stretch"
+        />
+      </View>
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
@@ -92,23 +94,13 @@ const LoginScreen = (props) => {
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
       <Text style={styles.title}>Login to Your Profile</Text>
-
       {/* Form fields with error messages */}
       <TextInput
-        placeholder="Username (unique)"
+        placeholder="Username/Email"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
         error={errors.username}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        error={errors.email}
         style={styles.input}
       />
       <TextInput
@@ -135,6 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#228B22",
     marginBottom: 20,
+    marginTop: 40,
     textAlign: "center",
   },
   input: {
@@ -150,8 +143,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute", // Position absolutely within the container
-    top: 10,
-    left: 10,
+    top: 140,
+    left: 15,
     padding: 10,
     backgroundColor: "#f0f0f0", // Light grey background
     borderRadius: 5,
@@ -160,6 +153,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#444",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
