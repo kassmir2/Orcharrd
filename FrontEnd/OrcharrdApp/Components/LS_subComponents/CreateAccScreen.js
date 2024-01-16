@@ -13,6 +13,7 @@ import {
 import { connect } from "react-redux";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
+const api = "http://127.0.0.1:34000";
 const CreateAccScreen = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -82,53 +83,56 @@ const CreateAccScreen = (props) => {
     // Set loading state and submit data
     setLoading(true);
     try {
-      const formData = new FormData();
-      formData.append("username", username);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("name", name);
-      formData.append("bio", bio);
-
-      // Append image data
+      const body = new FormData();
+      body.append("username", username);
+      body.append("email", email);
+      body.append("password", password);
+      body.append("name", name);
+      body.append("bio", bio);
       picOne &&
-        formData.append("picOne", {
+        body.append("picOne", {
           uri: picOne,
-          type: "image/jpeg",
-          name: "picOne.jpg",
+          name: `${username}picOne.png`,
+          type: "image/png",
+          filename: `${username}picOne.png`,
         });
+
       picTwo &&
-        formData.append("picTwo", {
+        body.append("picTwo", {
           uri: picTwo,
-          type: "image/jpeg",
-          name: "picTwo.jpg",
+          type: "image/png",
+          name: `${username}picTwo.png`,
+          filename: `${username}picTwo.png`,
         });
       picThree &&
-        formData.append("picThree", {
+        body.append("picThree", {
           uri: picThree,
-          type: "image/jpeg",
-          name: "picThree.jpg",
+          type: "image/png",
+          name: `${username}picThree.png`,
+          filename: `${username}picThree.png`,
         });
       picFour &&
-        formData.append("picFour", {
+        body.append("picFour", {
           uri: picFour,
-          type: "image/jpeg",
-          name: "picFour.jpg",
+          type: "image/png",
+          name: `${username}picFour.png`,
+          filename: `${username}picFour.png`,
         });
-
-      const response = await fetch("http://192.168.1.21:34000/createProfile", {
+      console.log("asking backend");
+      const response = await fetch(`${api}/createProfile`, {
         method: "POST",
-        body: formData,
+        body: body,
         headers: {
-          // Include any additional headers as needed
+          "Content-Type": "multipart/form-data",
+          enctype: "multipart/form-data",
         },
       });
-
       // Handle the response
       if (response.ok) {
         // Successful login
         setLoading(false);
         setIsLoggedIn(true);
-        console.log("should be logging in");
+        console.log("Logged In");
       } else if (response.status === 401) {
         // Handle login failure
         setLoading(false);
@@ -272,7 +276,7 @@ const CreateAccScreen = (props) => {
         style={{
           backgroundColor: "lightgrey",
           marginTop: 10,
-          padding:20,
+          padding: 20,
           marginBottom: 40,
         }}
         onPress={handleSubmit}

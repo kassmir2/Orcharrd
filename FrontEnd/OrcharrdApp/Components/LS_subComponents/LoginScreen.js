@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
+const api = "http://127.0.0.1:34000";
 const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -48,7 +49,7 @@ const LoginScreen = (props) => {
       // Your logic to create user profile using your chosen data storage solution
       // Replace this with your actual API call or storage method
       //console.log("We got this far");
-      const response = await fetch("http://192.168.1.21:34000/Login", {
+      const response = await fetch(`${api}/Login`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
