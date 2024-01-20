@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify, send_file, render_template, request
+from flask import Flask, jsonify, send_file, render_template, request, make_response
 import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -8,6 +8,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 from bson import ObjectId
 from flask_pymongo import PyMongo
 import gridfs
+import base64
 
 app = Flask(__name__)
 uri = (
@@ -100,31 +101,48 @@ def createProfile():
         return "Error processing request", 500
 
 
-@app.route("/get_images/<username>", methods=["GET"])
-def get_user_images(username):
+@app.route("/get_image/<picture>/<username>", methods=["GET"])
+def get_user_image(picture, username):
     try:
         queryuser = {"username": username}
         resultuser = userInfo.find_one(queryuser)
-        pic_ids = [
-            resultuser["picOne"],
-            resultuser["picTwo"],
-            resultuser["picThree"],
-            resultuser["picFour"],
-        ]
-        images_data = []
-        for id in pic_ids:
-            pic = fs.get(ObjectId(id))
-            image_data = {
-                "filename": pic.filename,
-                "content_type": pic.content_type,
-                "data": pic.read(),  # Read the file content
-            }
-            images_data.append(image_data)
-        
-        print(jsonify(images_data))
+
+        if resultuser is None:
+            return "User not found", 404
+
+        pic_id = resultuser[picture]
+
+        try:
+            pic = fs.get(ObjectId(pic_id))
+            response = make_response(pic.read())
+            response.headers["Content-Type"] = "image/jpeg"
+            response.status_code = 200
+            return response
+        except gridfs.errors.NoFile:
+            # Handle the case where a file is not found for a given ID
+            pass
+        return "something went wrong", 405
 
         # Return the list of file data as JSON
-        return jsonify(images_data)
 
-    except gridfs.errors.NoFile:
-        return "User images not found", 404
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/get_user_info/<username>", methods=["GET"])
+def get_user_info(username):
+    try:
+        queryuser = {"username": username}
+        resultuser = userInfo.find_one(queryuser)
+        print(resultuser)
+        user_information = {"username": resultuser["username"], "bio": resultuser["bio"]}
+        if resultuser is None:
+            return "User not found", 404
+
+        return jsonify(user_information)
+        # Return result user
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
