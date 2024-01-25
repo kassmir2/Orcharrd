@@ -26,7 +26,7 @@ const CreateAccScreen = (props) => {
     password: "",
   });
   const navigation = useNavigation();
-  const { setIsLoggedIn } = props;
+  const { setIsLoggedIn, setGlobalUsername } = props;
   const [loading, setLoading] = useState(false);
   const [picOne, setPicOne] = useState(null);
   const [picTwo, setPicTwo] = useState(null);
@@ -132,6 +132,7 @@ const CreateAccScreen = (props) => {
         // Successful login
         setLoading(false);
         setIsLoggedIn(true);
+        setGlobalUsername(username);
         console.log("Logged In");
       } else if (response.status === 401) {
         // Handle login failure
@@ -343,6 +344,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setIsLoggedIn: (isLoggedIn) =>
       dispatch({ type: "SET_IS_LOGGED_IN", isLoggedIn }),
+    setGlobalUsername: (globalUsername) =>
+      dispatch({ type: "SET_GLOBAL_USERNAME", globalUsername }),
   };
 };
 

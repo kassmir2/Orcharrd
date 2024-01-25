@@ -15,7 +15,7 @@ const api = "http://127.0.0.1:34000";
 const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedIn } = props;
+  const { setIsLoggedIn, setGlobalUsername } = props;
   const [errors, setErrors] = useState({
     username: "",
     password: "",
@@ -60,6 +60,7 @@ const LoginScreen = (props) => {
 
         setLoading(false);
         setIsLoggedIn(true);
+        setGlobalUsername(username);
         console.log("should be logging in");
       } else if (response.status == 400) {
         // Handle login failure
@@ -166,6 +167,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setIsLoggedIn: (isLoggedIn) =>
       dispatch({ type: "SET_IS_LOGGED_IN", isLoggedIn }),
+    setGlobalUsername: (globalUsername) =>
+      dispatch({ type: "SET_GLOBAL_USERNAME", globalUsername }),
   };
 };
 

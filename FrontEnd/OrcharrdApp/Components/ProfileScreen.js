@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { connect } from "react-redux";
 
 const api = "http://127.0.0.1:34000";
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
+  const { GlobalUsername } = props;
   const [picOne, setPicOne] = useState([]);
   const [picTwo, setPicTwo] = useState([]);
   const [picThree, setPicThree] = useState([]);
@@ -11,8 +13,7 @@ const ProfileScreen = () => {
   // Function to fetch image data from the backend
   const fetchImageData = async (setPic, pic) => {
     try {
-      const username = "peter"; // Replace with the actual username
-      const response = await fetch(`${api}/get_image/${pic}/${username}`);
+      const response = await fetch(`${api}/get_image/${pic}/${GlobalUsername}`);
 
       if (!response.ok) {
         console.error("Error fetching image data:", response.statusText);
@@ -34,8 +35,7 @@ const ProfileScreen = () => {
   };
   const fetchUserInfo = async () => {
     try {
-      const username = "peter"; // Replace with the actual username
-      const response = await fetch(`${api}/get_user_info/${username}`);
+      const response = await fetch(`${api}/get_user_info/${GlobalUsername}`);
 
       if (!response.ok) {
         console.error("Error fetching user information:", response.statusText);
@@ -123,5 +123,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+const mapStateToProps = (state) => ({
+  GlobalUsername: state.GlobalUsername,
+});
 
-export default ProfileScreen;
+export default connect(mapStateToProps)(ProfileScreen);

@@ -136,7 +136,7 @@ def get_user_info(username):
         queryuser = {"username": username}
         resultuser = userInfo.find_one(queryuser)
         print(resultuser)
-        user_information = {"username": resultuser["username"], "bio": resultuser["bio"]}
+        user_information = {"name": resultuser["name"], "bio": resultuser["bio"]}
         if resultuser is None:
             return "User not found", 404
 
