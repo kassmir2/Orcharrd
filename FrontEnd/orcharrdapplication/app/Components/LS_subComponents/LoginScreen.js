@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-const api = "http://127.0.0.1:34000";
+const api = "http://192.168.16.187:34000";
 const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

@@ -14,9 +14,9 @@ app = Flask(__name__)
 uri = (
     "mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority"
 )
-app.config[
-    "MONGO_URI"
-] = "mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = (
+    "mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority"
+)
 mongo = PyMongo(app)
 
 
@@ -39,7 +39,7 @@ def Login():
     try:
         # Assuming the request body contains JSON data
         data = json.loads(request.data.decode("UTF-8"))
-        #print(data)
+        # print(data)
         # Check if the required fields are present in the JSON data
         if "username" not in data:
             return "Missing 'username' in request body", 400
@@ -49,7 +49,7 @@ def Login():
         queryuser = {"username": username}
         queryemail = {"email": username}
         resultuser = userInfo.find_one(queryuser)
-        #print(resultuser)
+        # print(resultuser)
         resultemail = userInfo.find_one(queryemail)
         if resultuser is None and resultemail is None:
             return "No users match those credentials", 400
@@ -66,8 +66,8 @@ def Login():
 
 @app.route("/createProfile", methods=["POST"])
 def createProfile():
-    #print(request.form.to_dict())
-    #print(request.files.get("picOne"))
+    # print(request.form.to_dict())
+    # print(request.files.get("picOne"))
     try:
         # Get the image file from the request
         pics = ["picOne", "picTwo", "picThree", "picFour"]
@@ -81,7 +81,6 @@ def createProfile():
 
         # Add the GridFS file ID to the user data
 
-        
         username = data["username"]
         email = data["email"]
         queryuser = {"username": username}
@@ -136,7 +135,7 @@ def get_user_info(username):
     try:
         queryuser = {"username": username}
         resultuser = userInfo.find_one(queryuser)
-        #print(resultuser)
+        # print(resultuser)
         user_information = {"name": resultuser["name"], "bio": resultuser["bio"]}
         if resultuser is None:
             return "User not found", 404
@@ -160,14 +159,26 @@ def get_profiles(location, username):
             update_operation = {"$set": {"group": resultLocation["group"]}}
             result = locationInfo.update_one(filter_criteria, update_operation)
             print("inserted new user into group")
-        #print(resultLocation)
+        # print(resultLocation)
         group = resultLocation["group"]
         group.remove(username)
 
         if resultLocation is None:
             return "Location not found", 404
-
-        return jsonify({"group" : group})
+        user_profiles = []
+        pics = ["picOne", "picTwo", "picThree", "picFour"]
+        for user in group:
+            queryuser = {"username": user}
+            resultuser = userInfo.find_one(queryuser)
+            user_information = {
+                "name": resultuser["name"],
+                "bio": resultuser["bio"],
+                "username": resultuser["username"],
+            }
+            # for pic in pics:
+            #     pic_id = resultuser[pic]
+            user_profiles.append(user_information)
+        return jsonify({"userProfiles": user_profiles})
         # Return result user
 
     except Exception as e:

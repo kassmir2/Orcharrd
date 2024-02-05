@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 
-const api = "http://127.0.0.1:34000";
+const api = "http://192.168.16.187:34000";
 const CreateAccScreen = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

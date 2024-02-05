@@ -22,7 +22,7 @@ function Normal() {
                 fontSize: 15,
               }}
             >
-              Screen Name
+              Where Pairs Go To Grow
             </Text>
           </View>
         ),

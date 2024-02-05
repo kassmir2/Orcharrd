@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
 
-const api = "http://127.0.0.1:34000";
+const api = "http://192.168.16.187:34000";
 const ProfileScreen = (props) => {
   const { GlobalUsername } = props;
   const [picOne, setPicOne] = useState([]);
