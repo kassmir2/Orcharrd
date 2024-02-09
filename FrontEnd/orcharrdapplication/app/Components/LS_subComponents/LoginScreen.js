@@ -12,6 +12,7 @@ import {
 import { connect } from "react-redux";
 
 const api = "http://192.168.16.187:34000";
+const apiSchool = "http://10.195.11.92:34000";
 const LoginScreen = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +50,7 @@ const LoginScreen = (props) => {
       // Your logic to create user profile using your chosen data storage solution
       // Replace this with your actual API call or storage method
       //console.log("We got this far");
-      const response = await fetch(`${api}/Login`, {
+      const response = await fetch(`${apiSchool}/Login`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });

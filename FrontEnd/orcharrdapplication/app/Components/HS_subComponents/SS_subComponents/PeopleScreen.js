@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 //import { Swipeable } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 const api = "http://192.168.16.187:34000";
+const apiSchool = "http://10.195.11.92:34000";
 import SwipeCard from "./Cards";
 const PeopleScreen = (props) => {
   const { GlobalUsername, GlobalPlace } = props;
@@ -12,31 +13,7 @@ const PeopleScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isSwiping, setIsSwiping] = useState(false);
-
-  const fetchImageData = async (username) => {
-    // console.log("fetchImageData");
-    try {
-      let pic = "picOne";
-      const response = await fetch(`${api}/get_image/${pic}/${username}`);
-
-      if (!response.ok) {
-        console.error("Error fetching image data:", response.statusText);
-        return;
-      }
-
-      const data = await response.blob();
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        const base64data = reader.result.split(",")[1];
-        setPic(base64data);
-      };
-
-      reader.readAsDataURL(data);
-    } catch (error) {
-      console.error("Error fetching image data:", error);
-    }
-  };
+  const pictures = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,32 +21,13 @@ const PeopleScreen = (props) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `${api}/get_profiles/${GlobalPlace}/${GlobalUsername}`
+          `${apiSchool}/get_profiles/${GlobalPlace}/${GlobalUsername}`
         );
         const data = await response.json();
-
         // Use a temporary array to collect updated user profiles
-        const updatedUserProfiles = [];
-
-        for (const element of data.userProfiles) {
-          const username = element.username;
-          //await fetchImageData(username);
-          // Update the user object with the 'picOne' key and image data
-          const updatedUserProfile = {
-            ...element,
-            //picOne: pic,
-          };
-          updatedUserProfiles.push(updatedUserProfile);
-          setUsers(updatedUserProfiles);
-          console.log("did ", username);
-        }
-        console.log("updated length:", updatedUserProfiles.length);
-        console.log(updatedUserProfiles[0]);
-
-        // Update the state after the loop is complete
-        setUsers(updatedUserProfiles);
-
-        // console.log("users", updatedUserProfiles);
+        setUsers(data.userProfiles);
+        console.log("fetched User Data");
+        console.log(users[0]);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setHasError(true);
@@ -81,8 +39,9 @@ const PeopleScreen = (props) => {
     };
     if (!isLoading && !isSwiping) {
       fetchData();
+    } else if (!isLoading) {
     }
-  }, [api, GlobalPlace, GlobalUsername]);
+  }, [apiSchool, GlobalPlace, GlobalUsername]);
 
   const swipeRow = (username) => {
     // Send the swiped user's data to the backend
@@ -135,6 +94,7 @@ const PeopleScreen = (props) => {
           {users.length > 0 ? (
             <SwipeCard
               profile={users[currentProfileIndex]}
+              profileNext = {users[currentProfileIndex+1]}
               onSwipe={handleSwipe}
             />
           ) : (
