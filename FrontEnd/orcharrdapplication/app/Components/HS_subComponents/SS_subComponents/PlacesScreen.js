@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F0F8FF",
+    backgroundColor: "#FFF",
   },
   card: {
-    backgroundColor: "#8FBC8F",
+    backgroundColor: "#82cf97",
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,

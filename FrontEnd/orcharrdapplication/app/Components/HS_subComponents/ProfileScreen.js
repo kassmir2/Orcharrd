@@ -14,7 +14,7 @@ const ProfileScreen = (props) => {
   // Function to fetch image data from the backend
   const fetchImageData = async (setPic, pic) => {
     try {
-      const response = await fetch(`${apiSchool}/get_image/${pic}/${GlobalUsername}`);
+      const response = await fetch(`${api}/get_image/${pic}/${GlobalUsername}`);
 
       if (!response.ok) {
         console.error("Error fetching image data:", response.statusText);
@@ -36,7 +36,7 @@ const ProfileScreen = (props) => {
   };
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch(`${apiSchool}/get_user_info/${GlobalUsername}`);
+      const response = await fetch(`${api}/get_user_info/${GlobalUsername}`);
 
       if (!response.ok) {
         console.error("Error fetching user information:", response.statusText);

@@ -21,13 +21,12 @@ const PeopleScreen = (props) => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `${apiSchool}/get_profiles/${GlobalPlace}/${GlobalUsername}`
+          `${api}/get_profiles/${GlobalPlace}/${GlobalUsername}`
         );
         const data = await response.json();
         // Use a temporary array to collect updated user profiles
         setUsers(data.userProfiles);
         console.log("fetched User Data");
-        console.log(users[0]);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setHasError(true);
@@ -41,7 +40,7 @@ const PeopleScreen = (props) => {
       fetchData();
     } else if (!isLoading) {
     }
-  }, [apiSchool, GlobalPlace, GlobalUsername]);
+  }, [api, GlobalPlace, GlobalUsername]);
 
   const swipeRow = (username) => {
     // Send the swiped user's data to the backend
@@ -71,6 +70,7 @@ const PeopleScreen = (props) => {
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
 
   const handleSwipe = (profile, direction) => {
+    setCurrentProfileIndex((prevIndex) => prevIndex + 1);
     console.log("swiped Successfully");
     if (direction == "right") {
       swipeRow(profile.username);
@@ -81,8 +81,6 @@ const PeopleScreen = (props) => {
       console.log("reloading data");
       setCurrentProfileIndex(0);
     }
-
-    setCurrentProfileIndex((prevIndex) => prevIndex + 1);
   };
 
   return (
@@ -94,7 +92,7 @@ const PeopleScreen = (props) => {
           {users.length > 0 ? (
             <SwipeCard
               profile={users[currentProfileIndex]}
-              profileNext = {users[currentProfileIndex+1]}
+              profileNext={users[currentProfileIndex + 1]}
               onSwipe={handleSwipe}
             />
           ) : (

@@ -50,7 +50,7 @@ const LoginScreen = (props) => {
       // Your logic to create user profile using your chosen data storage solution
       // Replace this with your actual API call or storage method
       //console.log("We got this far");
-      const response = await fetch(`${apiSchool}/Login`, {
+      const response = await fetch(`${api}/Login`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
@@ -88,7 +88,7 @@ const LoginScreen = (props) => {
       <View style={styles.headerContainer}>
         <Image
           source={require("../../../assets/Orcharrd_Logo.png")}
-          style={{ width: 240, height: 80, marginTop: 40 }}
+          style={{ width: 300, height: 200, marginTop: 40 }}
           resizeMode="stretch"
         />
       </View>
@@ -113,16 +113,20 @@ const LoginScreen = (props) => {
         error={errors.password}
         style={styles.input}
       />
-      <Button title={"Submit"} onPress={handleSubmit} color="blue" />
+      <TouchableOpacity style={styles.logInButton} onPress={handleSubmit}>
+        <Text style={styles.logInText}>Log In</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F0FFF0",
+    backgroundColor: "#FFF",
     padding: 20,
     borderRadius: 10,
+    //alignItems: "center",
+    //justifyContent: "center",
   },
   title: {
     fontSize: 24,
@@ -133,10 +137,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    backgroundColor: "#FFFFFF",
-    padding: 10,
+    backgroundColor: "#82cf97",
+    padding: 20,
     borderRadius: 5,
     marginBottom: 10,
+    textShadowColor: "#000",
     fontSize: 16,
   },
   errorText: {
@@ -150,6 +155,20 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#f0f0f0", // Light grey background
     borderRadius: 5,
+  },
+  logInButton: {
+    position: "relative",
+    backgroundColor: "#82cf97", // Light grey background
+    borderRadius: 5,
+    padding: 5,
+    width: "50%",
+    alignSelf: "center",
+  },
+  logInText: {
+    fontSize: 30,
+    color: "#dff5e5",
+    textAlign: "center",
+    fontWeight: "bold",
   },
   backButtonText: {
     fontSize: 14,

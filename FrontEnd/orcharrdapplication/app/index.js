@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFFFF",
   },
   buttonContainer: {
     flexDirection: "column",
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     width: "70%", // Adjust width as needed
   },
   button: {
-    backgroundColor: "#8FBC8F",
+    backgroundColor: "#82cf97",
     borderRadius: 10,
     padding: 20,
     marginBottom: 15,

@@ -117,7 +117,7 @@ const CreateAccScreen = (props) => {
           filename: `${username}picFour.png`,
         });
       console.log("asking backend");
-      const response = await fetch(`${apiSchool}/createProfile`, {
+      const response = await fetch(`${api}/createProfile`, {
         method: "POST",
         body: body,
         headers: {
@@ -156,7 +156,7 @@ const CreateAccScreen = (props) => {
       <View style={styles.headerContainer}>
         <Image
           source={require("../../../assets/Orcharrd_Logo.png")}
-          style={{ width: 240, height: 80, marginTop: 40 }}
+          style={{ width: 240, height: 150, marginTop: 40 }}
           resizeMode="stretch"
         />
       </View>
@@ -217,9 +217,7 @@ const CreateAccScreen = (props) => {
         style={styles.addImage}
         onPress={() => openImagePicker(setPicOne)}
       >
-        <Text style={{ color: "black", marginTop: 10 }}>
-          Pick an image from camera roll
-        </Text>
+        <Text style={styles.submitText}>Pick an image from camera roll</Text>
       </TouchableOpacity>
       {picTwo && (
         <Image
@@ -233,9 +231,7 @@ const CreateAccScreen = (props) => {
         style={styles.addImage}
         onPress={() => openImagePicker(setPicTwo)}
       >
-        <Text style={{ color: "black", marginTop: 10 }}>
-          Pick an image from camera roll
-        </Text>
+        <Text style={styles.submitText}>Pick an image from camera roll</Text>
       </TouchableOpacity>
       {picThree && (
         <Image
@@ -249,9 +245,7 @@ const CreateAccScreen = (props) => {
         style={styles.addImage}
         onPress={() => openImagePicker(setPicThree)}
       >
-        <Text style={{ color: "black", marginTop: 10 }}>
-          Pick an image from camera roll
-        </Text>
+        <Text style={styles.submitText}>Pick an image from camera roll</Text>
       </TouchableOpacity>
       {picFour && (
         <Image
@@ -265,20 +259,10 @@ const CreateAccScreen = (props) => {
         style={styles.addImage}
         onPress={() => openImagePicker(setPicFour)}
       >
-        <Text style={{ color: "black", marginTop: 10 }}>
-          Pick an image from camera roll
-        </Text>
+        <Text style={styles.submitText}>Pick an image from camera roll</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "lightgrey",
-          marginTop: 10,
-          padding: 20,
-          marginBottom: 40,
-        }}
-        onPress={handleSubmit}
-      >
-        <Text style={styles.backButtonText}>Submit</Text>
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitText}>Create Profile</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -286,7 +270,7 @@ const CreateAccScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F0FFF0",
+    backgroundColor: "#FFF",
     padding: 20,
     borderRadius: 10,
   },
@@ -298,7 +282,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#82cf97",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
@@ -330,9 +314,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   addImage: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "#82cf97",
     marginTop: 20,
     padding: 20,
+  },
+  submitButton: {
+    marginTop: 20,
+    padding: 10,
+    width: "50%",
+    position: "relative",
+    alignSelf: "center",
+    backgroundColor: "#82cf97",
+  },
+  submitText: {
+    fontSize: 20,
+    color: "#dff5e5",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
 
