@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
 
-const api = "http://192.168.16.187:34000";
-const apiSchool = "http://10.195.11.92:34000";
+const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 const ProfileScreen = (props) => {
   const { GlobalUsername } = props;
   const [picOne, setPicOne] = useState([]);
@@ -61,11 +60,10 @@ const ProfileScreen = (props) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>User Profile</Text>
       {userInfo && (
         <View style={styles.userInfoContainer}>
-          <Text>Name: {userInfo.name}</Text>
-          <Text>Bio: {userInfo.bio}</Text>
+          <Text style={styles.title}>{userInfo.name}</Text>
+          <Text style={styles.bio}>Bio: {userInfo.bio}</Text>
         </View>
       )}
       {picOne && (
@@ -108,18 +106,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#FFF",
+    //alignItems: "center",
+  },
+  userInfoContainer: {
+    padding: 1,
+    flex: 1,
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#82cf97",
+  },
+  bio: {
+    fontSize: 20,
+    marginBottom: 10,
+    color: "black",
   },
   imageContainer: {
     marginBottom: 20,
+    alignItems: "center",
+    //width: "50%",
+    //justifyContent: "center",
+    //width: 200,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 400,
     resizeMode: "cover",
     marginBottom: 10,
   },

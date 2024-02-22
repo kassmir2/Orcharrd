@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 //import { Swipeable } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-const api = "http://192.168.16.187:34000";
-const apiSchool = "http://10.195.11.92:34000";
+const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 import SwipeCard from "./Cards";
 const PeopleScreen = (props) => {
   const { GlobalUsername, GlobalPlace } = props;

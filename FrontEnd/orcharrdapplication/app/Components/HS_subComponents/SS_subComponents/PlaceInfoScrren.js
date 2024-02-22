@@ -7,12 +7,13 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  useLocalSearchParams,
 } from "react-native";
 
 import { connect } from "react-redux";
 import { useRouter } from "expo-router";
 
-const PlacesScreen = (props) => {
+const PlacesInfoScreen = (props) => {
   const router = useRouter();
 
   const { setGlobalPlace } = props;
@@ -36,6 +37,10 @@ const PlacesScreen = (props) => {
       place: "a Tobacco Trail???",
     },
   ];
+  // const selectPlace = (name) => {
+  //   //router.setParams({ place: name });
+  //   router.push(`Components/HS_subComponents/SS_subComponents/PeopleScreen/`);
+  // };
   return (
     <View style={styles.container}>
       <FlatList
@@ -105,5 +110,4 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_GLOBAL_PLACE", globalPlace }),
   };
 };
-
-export default connect(null, mapDispatchToProps)(PlacesScreen);
+export default connect(null, mapDispatchToProps)(PlacesInfoScreen);
