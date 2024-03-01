@@ -153,9 +153,10 @@ def get_profiles(location, username):
     try:
         queryLocation = {"name": location}
         resultLocation = locationInfo.find_one(queryLocation)
+        
         if username not in resultLocation["group"]:
             resultLocation["group"].append(username)
-            filter_criteria = {"_id": ObjectId("65b4624fe775051e051de6f9")}
+            filter_criteria = {"_id": resultLocation["_id"]}
             update_operation = {"$set": {"group": resultLocation["group"]}}
             result = locationInfo.update_one(filter_criteria, update_operation)
             print("inserted new user into group")
@@ -181,6 +182,84 @@ def get_profiles(location, username):
         return jsonify({"userProfiles": user_profiles})
         # Return result user
 
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/get_places/<username>", methods=["GET"])
+def get_places(username):
+    locations = []
+    try:
+        resultLocation = locationInfo.find({})
+        for c in resultLocation:
+            l = {
+                "name": c["name"],
+                "group": c["group"],
+                "category": c["category"],
+                "description": c["description"],
+                "address": c["address"],
+                "price": c["price"],
+            }
+            locations.append(l)
+
+        if resultLocation is None:
+            return "No locations not found", 404
+        return jsonify({"locations": locations})
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/get_place_info/<place>", methods=["GET"])
+def get_place_info(place):
+    try:
+        queryloc = {"name": place}
+        resultloc = locationInfo.find_one(queryloc)
+        # print(resultuser)
+        loc_information = {
+            "name": resultloc["name"],
+            "group": resultloc["group"],
+            "category": resultloc["category"],
+            "description": resultloc["description"],
+            "address": resultloc["address"],
+            "price": resultloc["price"],
+        }
+        if resultloc is None:
+            return "User not found", 404
+
+        return jsonify(loc_information)
+        # Return result user
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/get_image_loc/<picture>/<place>", methods=["GET"])
+def get_loc_image(picture, place):
+
+    picture = picture + "."
+    try:
+        queryloc = {"name": place}
+        resultloc = locationInfo.find_one(queryloc)
+
+        if resultloc is None:
+            return "User not found", 404
+
+        pic_id = resultloc[picture]
+
+        try:
+            pic = fs.get(ObjectId(pic_id))
+            response = make_response(pic.read())
+            response.headers["Content-Type"] = "image/jpeg"
+            response.status_code = 200
+            return response
+        except gridfs.errors.NoFile:
+            # Handle the case where a file is not found for a given ID
+            pass
+        return "something went wrong", 405
     except Exception as e:
         print(f"Error: {str(e)}")
         return "Internal Server Error", 500

@@ -26,12 +26,12 @@ fs = gridfs.GridFS(db)
 
 try:
     data = {
-        "name": "American Tobacco Trail",
+        "name": "",
         "group": [],
-        "category": "Activity",
-        "description": "American Tobacco Trail from Durham is a 21.9 mile heavily trafficked point-to-point trail located near Durham, North Carolina that features a lake and is good for all skill levels. The trail offers a number of activity options and is accessible year-round. Dogs and horses are also able to use this trail.",
-        "address": "American Tobacco Trail, Durham, NC 27701",
-        "price": "Free",
+        "category": "",
+        "description": "",
+        "address": "",
+        "price": "",
         "tags": [],
     }
     pics_folder = "pics"
