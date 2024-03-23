@@ -8,11 +8,10 @@ const PeopleScreen = (props) => {
   const { GlobalUsername, GlobalPlace } = props;
 
   const [users, setUsers] = useState([]);
-  const [pic, setPic] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isSwiping, setIsSwiping] = useState(false);
-  const pictures = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,45 +40,30 @@ const PeopleScreen = (props) => {
     }
   }, [api, GlobalPlace, GlobalUsername]);
 
-  const swipeRow = (username) => {
-    // Send the swiped user's data to the backend
-    console.log("swiped yes on ", username);
-    // fetch(
-    //   `${api}/add_swiped_user/${GlobalPlace}/${GlobalUsername}/${username}`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success) {
-    //       Alert.alert("Success", "You swiped successfully!");
-    //     } else {
-    //       Alert.alert("Error", data.message);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     Alert.alert("Error", "Something went wrong. Please try again.");
-    //   });
-  };
-
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
 
-  const handleSwipe = (profile, direction) => {
-    setCurrentProfileIndex((prevIndex) => prevIndex + 1);
-    console.log("swiped Successfully");
+  const handleSwipe = async (username, direction) => {
+    console.log("swiped", direction, "on", username);
     if (direction == "right") {
-      swipeRow(profile.username);
+      const response = await fetch(
+        `${api}/addSwipedUser/${GlobalUsername}/${username}/${GlobalPlace}`,
+        {
+          method: "POST",
+        }
+      );
+      //if it is not a match
+      if (response.status == 201) {
+        // If response status code is 200-299
+        // Successful login
+        console.log("success but no match");
+        //is a match
+      } else if (response.status == 200) {
+        console.log("MATCH!");
+      } else if (response.status == 500) {
+        console.log("there was an error");
+      }
     }
-    // Call your swipeRow function
-    if (currentProfileIndex == 3) {
-      setIsSwiping(false);
-      console.log("reloading data");
-      setCurrentProfileIndex(0);
-    }
+    setCurrentProfileIndex((prevIndex) => prevIndex + 1);
   };
 
   return (

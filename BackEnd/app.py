@@ -93,6 +93,8 @@ def createProfile():
             return "A user already exists with that email", 402
 
         # Insert the user data into the UserInfo collection
+        data["swipedRightGroup"] = []
+        data["matches"] = []
         result = userInfo.insert_one(data)
         return "Profile Created Successfully!", 200
 
@@ -153,12 +155,22 @@ def get_profiles(location, username):
     try:
         queryLocation = {"name": location}
         resultLocation = locationInfo.find_one(queryLocation)
-        
+
         if username not in resultLocation["group"]:
             resultLocation["group"].append(username)
             filter_criteria = {"_id": resultLocation["_id"]}
             update_operation = {"$set": {"group": resultLocation["group"]}}
             result = locationInfo.update_one(filter_criteria, update_operation)
+            # add array for that location for that user
+            queryUser = {"username": username}
+            resultUser = userInfo.find_one(queryUser)
+
+            resultUser["swipedRightGroup"][location] = []
+            filter_criteria = {"_id": resultUser["_id"]}
+            update_operation = {
+                "$set": {"swipedRightGroup": resultUser["swipedRightGroup"]}
+            }
+            result = userInfo.update_one(filter_criteria, update_operation)
             print("inserted new user into group")
         # print(resultLocation)
         group = resultLocation["group"]
@@ -260,6 +272,77 @@ def get_loc_image(picture, place):
             # Handle the case where a file is not found for a given ID
             pass
         return "something went wrong", 405
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/addSwipedUser/<user>/<swipedUser>/<location>", methods=["POST"])
+def add_swiped_user(user, swipedUser, location):
+    print(user, swipedUser, location)
+    try:
+        querySwipedUser = {"username": swipedUser}
+        resultSwipedUser = userInfo.find_one(querySwipedUser)
+        # if the swiped user has not swiped right on this user
+        print("got here")
+        if user not in resultSwipedUser["swipedRightGroup"][location]:
+            print("got here 2")
+            queryUser = {"username": user}
+            resultUser = userInfo.find_one(queryUser)
+            if swipedUser not in resultUser["swipedRightGroup"][location]:
+                resultUser["swipedRightGroup"][location].append(swipedUser)
+                filter_criteria = {"_id": resultUser["_id"]}
+                update_operation = {
+                    "$set": {"swipedRightGroup": resultUser["swipedRightGroup"]}
+                }
+                result = userInfo.update_one(filter_criteria, update_operation)
+                print("inserted new user into swiped right group")
+                return "added user to swiped right group ", 201
+
+            print("already swiped right on this user for this location")
+            return "already swiped right on this user for this location", 201
+        else:
+            # put logic here that is the swiped user had already swiped right on this user so they should match and both be put into each others matching groups
+            queryUser = {"username": user}
+            resultUser = userInfo.find_one(queryUser)
+            new_match = {"username": swipedUser, "location": location}
+            resultUser["matches"].append(new_match)
+            filter_criteria = {"_id": resultUser["_id"]}
+            update_operation = {"$set": {"matches": resultUser["matches"]}}
+            result = userInfo.update_one(filter_criteria, update_operation)
+            new_match_2 = {"username": user, "location": location}
+            resultSwipedUser["matches"].append(new_match_2)
+            filter_criteria_swipedUser = {"_id": resultSwipedUser["_id"]}
+            update_operation_swipedUser = {
+                "$set": {"matches": resultSwipedUser["matches"]}
+            }
+            resultSwipedUser = userInfo.update_one(
+                filter_criteria_swipedUser, update_operation_swipedUser
+            )
+            return "matched with user", 200
+
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        return "Error processing request", 500
+
+
+@app.route("/get_matches/<username>", methods=["GET"])
+def get_matches(username):
+    try:
+        queryUser = {"username": username}
+        resultUser = userInfo.find_one(queryUser)
+        matches = resultUser["matches"]
+        if len(matches) == 0:
+            return "no matches found", 201
+        to_return = []
+
+        for m in matches:
+            tmp = {"username": m["username"], "location": m["location"]}
+            to_return.append(tmp)
+
+        return jsonify({"matches": to_return})
+        # Return result user
+
     except Exception as e:
         print(f"Error: {str(e)}")
         return "Internal Server Error", 500

@@ -47,7 +47,7 @@ function Normal() {
         }}
       />
       <Tabs.Screen
-        name="ChatScreen"
+        name="CS_subComponents"
         options={{
           tabBarLabel: "Matches",
           tabBarIcon: ({ color, size }) => (

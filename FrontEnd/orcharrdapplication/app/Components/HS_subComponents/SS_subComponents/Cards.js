@@ -10,6 +10,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { connect } from "react-redux";
+
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 var wait = (ms) => {
   const start = Date.now();
@@ -55,6 +57,55 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
   const [imagesUserTwo, setImagesUserTwo] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
+
+  const [panResponder, setPanResponder] = useState(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => setIsSwiping(true),
+      onPanResponderMove: (event, gesture) => {
+        translateX.setValue(gesture.dx);
+      },
+      onPanResponderRelease: (event, gesture) => {
+        const { dx } = gesture;
+        const screenWidth = Dimensions.get("window").width;
+        const swipeThreshold = screenWidth / 3;
+
+        if (dx > swipeThreshold) {
+          setFirstSwipe(false);
+          setSwipeCount((prevIndex) => prevIndex + 1);
+
+          setCurrentIndex(0);
+
+          onSwipe(profile.username, "right");
+
+          Animated.timing(translateX, {
+            toValue: screenWidth,
+            duration: 200,
+            useNativeDriver: true,
+          }).start(() => translateX.setValue(0));
+        } else if (dx < -swipeThreshold) {
+          setFirstSwipe(false);
+          setSwipeCount((prevIndex) => prevIndex + 1);
+
+          setCurrentIndex(0);
+          onSwipe(profile.username, "left");
+          Animated.timing(translateX, {
+            toValue: -screenWidth,
+            duration: 200,
+            useNativeDriver: true,
+          }).start(() => translateX.setValue(0));
+        } else {
+          Animated.spring(translateX, {
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
+        }
+
+        setIsSwiping(false);
+      },
+    })
+  );
 
   const nextImage = () => {
     if (currentIndex < images.length - 1) {
@@ -109,8 +160,8 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
 
   const [translateX] = useState(new Animated.Value(0));
 
-  const panResponder = useRef(
-    PanResponder.create({
+  useEffect(() => {
+    const responder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => setIsSwiping(true),
@@ -127,7 +178,8 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
           setSwipeCount((prevIndex) => prevIndex + 1);
 
           setCurrentIndex(0);
-          onSwipe(profile, "right");
+
+          onSwipe(profile.username, "right");
 
           Animated.timing(translateX, {
             toValue: screenWidth,
@@ -139,7 +191,7 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
           setSwipeCount((prevIndex) => prevIndex + 1);
 
           setCurrentIndex(0);
-          onSwipe(profile, "left");
+          onSwipe(profile.username, "left");
           Animated.timing(translateX, {
             toValue: -screenWidth,
             duration: 200,
@@ -154,8 +206,9 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
 
         setIsSwiping(false);
       },
-    })
-  ).current;
+    });
+    setPanResponder(responder);
+  }, [profile]);
 
   return (
     <View style={styles.container}>
@@ -234,6 +287,7 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
     </View>
   );
 };
+
 export default SwipeCard;
 
 const styles = StyleSheet.create({
