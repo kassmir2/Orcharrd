@@ -10,6 +10,7 @@ import {
 } from "react-native";
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 import { connect } from "react-redux";
+import { Video } from "expo-av";
 
 const PlaceInfoScreen = (props) => {
   const { GlobalPlace } = props;
@@ -81,38 +82,99 @@ const PlaceInfoScreen = (props) => {
             <Text style={styles.subtitle}>Address: {locInfo["address"]}</Text>
             <Text style={styles.subtitle}>Price: {locInfo["price"]}</Text>
 
-            {picOne && (
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${picOne}` }}
-                  style={styles.image}
-                />
-              </View>
-            )}
-            {picTwo && (
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${picTwo}` }}
-                  style={styles.image}
-                />
-              </View>
-            )}
-            {picThree && (
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${picThree}` }}
-                  style={styles.image}
-                />
-              </View>
-            )}
-            {picFour && (
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${picFour}` }}
-                  style={styles.image}
-                />
-              </View>
-            )}
+            <View>
+              {picOne.length !== 0 ? ( // Use curly braces here
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${picOne}` }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <View style={styles.videoContainer}>
+                  <Video
+                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={true}
+                    resizeMode="stretch"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                  />
+                </View>
+              )}
+            </View>
+            <View style={styles.container}>
+              {picTwo.length !== 0 ? ( // Use curly braces here
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${picTwo}` }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <View style={styles.videoContainer}>
+                  <Video
+                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={true}
+                    resizeMode="stretch"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                  />
+                </View>
+              )}
+            </View>
+
+            <View style={styles.container}>
+              {picThree.length !== 0 ? (
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${picThree}` }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <View style={styles.videoContainer}>
+                  <Video
+                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={true}
+                    resizeMode="stretch"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                  />
+                </View>
+              )}
+            </View>
+            <View style={styles.container}>
+              {picFour.length !== 0 ? ( // Use curly braces here
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${picFour}` }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <View style={styles.videoContainer}>
+                  <Video
+                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={true}
+                    resizeMode="stretch"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                  />
+                </View>
+              )}
+            </View>
           </View>
         )}
       </ScrollView>
@@ -183,9 +245,16 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginBottom: 20,
     alignItems: "center",
-    //width: "50%",
-    //justifyContent: "center",
-    //width: 200,
+  },
+  video: {
+    width: 300,
+    height: 400,
+    resizeMode: "cover",
+    marginBottom: 10,
+  },
+  videoContainer: {
+    marginBottom: 20,
+    alignItems: "center",
   },
 });
 

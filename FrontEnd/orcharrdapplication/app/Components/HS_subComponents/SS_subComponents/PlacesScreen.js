@@ -65,7 +65,6 @@ const PlacesScreen = (props) => {
                   </Text>
                 )}
                 <View style={styles.horizontalLine}></View>
-                
               </TouchableOpacity>
             </View>
           )}
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 10,
   },
-
+  
 });
 
 const mapDispatchToProps = (dispatch) => {

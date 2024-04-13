@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { connect } from "react-redux";
 import { useRouter } from "expo-router";
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -16,7 +22,12 @@ const MatchesScreen = (props) => {
       setIsLoading(true);
       try {
         const response = await fetch(`${api}/get_matches/${GlobalUsername}`);
+        if (response.status == 201) {
+          console.log("no matches found");
+          return;
+        }
         const data = await response.json();
+
         setMatches(data.matches);
         console.log("fetched User Data");
       } catch (error) {

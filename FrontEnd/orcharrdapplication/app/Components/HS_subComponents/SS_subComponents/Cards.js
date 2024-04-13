@@ -235,12 +235,12 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
         <TouchableOpacity
           style={{
             position: "absolute",
-            height: "90%",
+            height: "100%",
             width: "60%",
             right: 0,
             top: 0,
             bottom: 0,
-            left: 210,
+            left: "50%",
             elevation: 6,
             zIndex: 2,
           }}
@@ -249,9 +249,9 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
         <TouchableOpacity
           style={{
             position: "absolute",
-            height: "90%",
+            height: "100%",
             width: "50%",
-            right: 0,
+            right: "0%",
             top: 0,
             bottom: 0,
             left: 0,
@@ -267,7 +267,7 @@ const SwipeCard = ({ profile, profileNext, onSwipe }) => {
 
       <View style={styles.backCard}>
         <View style={styles.profileNameContainer}>
-          <Text style={styles.backName}>{profileNext.name} back</Text>
+          <Text style={styles.profileName}>{profileNext.name} back</Text>
           {swipeCount % 2 == 0 ? (
             <Image
               source={{ uri: `data:image/jpeg;base64,${userTwoPicOne}` }}
@@ -292,30 +292,33 @@ export default SwipeCard;
 
 const styles = StyleSheet.create({
   container: {
+    top: 0,
     flex: 1,
     backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    right: 0,
   },
   card: {
-    zIndex: 1,
-    width: "108%",
-    height: "102%",
+    top: 0,
+    zIndex: 2,
+    width: "100%",
+    height: "100%",
     borderRadius: 10,
     backgroundColor: "#FFF",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 5,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
+    padding: 0,
+    right: 0,
   },
   backCard: {
-    zIndex: 0,
-    width: "108%",
-    height: "102%",
+    zIndex: 1,
+    width: "100%",
+    height: "100%",
     borderRadius: 10,
     backgroundColor: "#FFF",
     shadowColor: "#000",
@@ -324,38 +327,37 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
   },
   profileImage: {
-    width: 400,
-    height: 600,
+    width: "100%",
+    height: "90%",
     resizeMode: "cover",
     borderRadius: 10,
   },
   backImage: {
     resizeMode: "cover",
     borderRadius: 10,
-    width: 400,
+    width: 300,
     height: 600,
+    position: "relative",
   },
+
   profileInfo: {
-    position: "absolute",
-    bottom: 1,
-    padding: 20,
+    position: "relative",
+    marginTop: 0,
+    padding: 5,
   },
   profileNameContainer: {
-    position: "absolute",
-    top: 10,
-    padding: 20,
+    position: "relative",
+    top: "1%",
+    padding: 5,
   },
   profileName: {
     fontSize: 20,
     fontWeight: "bold",
   },
-  backName: {
-    fontSize: 20,
-    left: 150,
-    fontWeight: "bold",
-  },
+
   profileBio: {
     fontSize: 16,
     color: "#666",

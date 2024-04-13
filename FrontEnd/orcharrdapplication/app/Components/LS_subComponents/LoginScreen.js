@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
+import { Video } from "expo-av";
 
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 const LoginScreen = (props) => {
@@ -53,7 +53,7 @@ const LoginScreen = (props) => {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
-      //console.log(response);
+
       if (response.ok) {
         // If response status code is 200-299
         // Successful login
@@ -83,38 +83,58 @@ const LoginScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      {/*header container*/}
-      <View style={styles.headerContainer}>
-        <Image
-          source={require("../../../assets/Orcharrd_Logo.png")}
-          style={{ width: 300, height: 200, marginTop: 40 }}
-          resizeMode="stretch"
-        />
-      </View>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>Login to Your Profile</Text>
-      {/* Form fields with error messages */}
-      <TextInput
-        placeholder="Username/Email"
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
-        error={errors.username}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-        error={errors.password}
-        style={styles.input}
-      />
-      <TouchableOpacity style={styles.logInButton} onPress={handleSubmit}>
-        <Text style={styles.logInText}>Log In</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Video
+            source={require("../../../assets/Orcharrd_Loading.mov")}
+            rate={1.0}
+            volume={1.0}
+            isMuted={true}
+            resizeMode="stretch"
+            shouldPlay
+            isLooping
+            style={styles.video}
+          />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          {/*header container*/}
+          <View style={styles.headerContainer}>
+            <Image
+              source={require("../../../assets/Orcharrd_Logo.png")}
+              style={{ width: 300, height: 200, marginTop: 40 }}
+              resizeMode="stretch"
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <Text style={styles.backButtonText}>Back</Text>
+          </TouchableOpacity>
+          <Text style={styles.title}>Login to Your Profile</Text>
+          {/* Form fields with error messages */}
+          <TextInput
+            placeholder="Username/Email"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            error={errors.username}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            error={errors.password}
+            style={styles.input}
+          />
+          <TouchableOpacity style={styles.logInButton} onPress={handleSubmit}>
+            <Text style={styles.logInText}>Log In</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -178,6 +198,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+  },
+  video: {
+    width: "100%",
+    height: "100%",
   },
 });
 

@@ -93,7 +93,7 @@ def createProfile():
             return "A user already exists with that email", 402
 
         # Insert the user data into the UserInfo collection
-        data["swipedRightGroup"] = []
+        data["swipedRightGroup"] = {}
         data["matches"] = []
         result = userInfo.insert_one(data)
         return "Profile Created Successfully!", 200
@@ -284,9 +284,7 @@ def add_swiped_user(user, swipedUser, location):
         querySwipedUser = {"username": swipedUser}
         resultSwipedUser = userInfo.find_one(querySwipedUser)
         # if the swiped user has not swiped right on this user
-        print("got here")
         if user not in resultSwipedUser["swipedRightGroup"][location]:
-            print("got here 2")
             queryUser = {"username": user}
             resultUser = userInfo.find_one(queryUser)
             if swipedUser not in resultUser["swipedRightGroup"][location]:

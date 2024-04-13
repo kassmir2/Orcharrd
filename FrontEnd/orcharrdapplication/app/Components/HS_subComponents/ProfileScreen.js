@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
+import { Video } from "expo-av";
 
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 const ProfileScreen = (props) => {
@@ -66,38 +67,99 @@ const ProfileScreen = (props) => {
           <Text style={styles.bio}>Bio: {userInfo.bio}</Text>
         </View>
       )}
-      {picOne && (
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${picOne}` }}
-            style={styles.image}
-          />
-        </View>
-      )}
-      {picTwo && (
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${picTwo}` }}
-            style={styles.image}
-          />
-        </View>
-      )}
-      {picThree && (
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${picThree}` }}
-            style={styles.image}
-          />
-        </View>
-      )}
-      {picFour && (
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${picFour}` }}
-            style={styles.image}
-          />
-        </View>
-      )}
+      <View>
+        {picOne.length !== 0 ? ( // Use curly braces here
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${picOne}` }}
+              style={styles.image}
+            />
+          </View>
+        ) : (
+          <View style={styles.videoContainer}>
+            <Video
+              source={require("../../../assets/Orcharrd_Loading.mov")}
+              rate={1.0}
+              volume={1.0}
+              isMuted={true}
+              resizeMode="stretch"
+              shouldPlay
+              isLooping
+              style={styles.video}
+            />
+          </View>
+        )}
+      </View>
+      <View style={styles.container}>
+        {picTwo.length !== 0 ? ( // Use curly braces here
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${picTwo}` }}
+              style={styles.image}
+            />
+          </View>
+        ) : (
+          <View style={styles.videoContainer}>
+            <Video
+              source={require("../../../assets/Orcharrd_Loading.mov")}
+              rate={1.0}
+              volume={1.0}
+              isMuted={true}
+              resizeMode="stretch"
+              shouldPlay
+              isLooping
+              style={styles.video}
+            />
+          </View>
+        )}
+      </View>
+
+      <View style={styles.container}>
+        {picThree.length !== 0 ? (
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${picThree}` }}
+              style={styles.image}
+            />
+          </View>
+        ) : (
+          <View style={styles.videoContainer}>
+            <Video
+              source={require("../../../assets/Orcharrd_Loading.mov")}
+              rate={1.0}
+              volume={1.0}
+              isMuted={true}
+              resizeMode="stretch"
+              shouldPlay
+              isLooping
+              style={styles.video}
+            />
+          </View>
+        )}
+      </View>
+      <View style={styles.container}>
+        {picFour.length !== 0 ? ( // Use curly braces here
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${picFour}` }}
+              style={styles.image}
+            />
+          </View>
+        ) : (
+          <View style={styles.videoContainer}>
+            <Video
+              source={require("../../../assets/Orcharrd_Loading.mov")}
+              rate={1.0}
+              volume={1.0}
+              isMuted={true}
+              resizeMode="stretch"
+              shouldPlay
+              isLooping
+              style={styles.video}
+            />
+          </View>
+        )}
+      </View>
     </ScrollView>
   );
 };
@@ -128,15 +190,22 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginBottom: 20,
     alignItems: "center",
-    //width: "50%",
-    //justifyContent: "center",
-    //width: 200,
   },
   image: {
     width: 300,
     height: 400,
     resizeMode: "cover",
     marginBottom: 10,
+  },
+  video: {
+    width: 300,
+    height: 400,
+    resizeMode: "cover",
+    marginBottom: 10,
+  },
+  videoContainer: {
+    marginBottom: 20,
+    alignItems: "center",
   },
 });
 const mapStateToProps = (state) => ({

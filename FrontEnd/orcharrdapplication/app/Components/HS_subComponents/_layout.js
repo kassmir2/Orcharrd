@@ -11,7 +11,7 @@ function Normal() {
           <View style={styles.headerContainer}>
             <Image
               source={require("../../../assets/Orcharrd_Logo.png")}
-              style={{ width: 60, height: 40, marginLeft: 5 }}
+              style={{ width: "30%", height: "180%", marginLeft: 5 }}
               resizeMode="stretch"
             />
             <Text
