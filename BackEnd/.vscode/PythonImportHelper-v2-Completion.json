@@ -1,0 +1,366 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "send_file",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "make_response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "pymongo",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo.mongo_client",
+        "description": "pymongo.mongo_client",
+        "isExtraImport": true,
+        "detail": "pymongo.mongo_client",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo.mongo_client",
+        "description": "pymongo.mongo_client",
+        "isExtraImport": true,
+        "detail": "pymongo.mongo_client",
+        "documentation": {}
+    },
+    {
+        "label": "ServerApi",
+        "importPath": "pymongo.server_api",
+        "description": "pymongo.server_api",
+        "isExtraImport": true,
+        "detail": "pymongo.server_api",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "ImmutableMultiDict",
+        "importPath": "werkzeug.datastructures",
+        "description": "werkzeug.datastructures",
+        "isExtraImport": true,
+        "detail": "werkzeug.datastructures",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "PyMongo",
+        "importPath": "flask_pymongo",
+        "description": "flask_pymongo",
+        "isExtraImport": true,
+        "detail": "flask_pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "PyMongo",
+        "importPath": "flask_pymongo",
+        "description": "flask_pymongo",
+        "isExtraImport": true,
+        "detail": "flask_pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "gridfs",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "gridfs",
+        "description": "gridfs",
+        "detail": "gridfs",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Login",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:\n            return \"Missing 'username' in request body\", 400\n        username = data[\"username\"]\n        # Use the username in the query",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "createProfile",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def createProfile():\n    # print(request.form.to_dict())\n    # print(request.files.get(\"picOne\"))\n    try:\n        # Get the image file from the request\n        pics = [\"picOne\", \"picTwo\", \"picThree\", \"picFour\"]\n        data = request.form.to_dict()\n        for pic in pics:\n            photo = request.files.get(pic)\n            photo_id = fs.put(photo, filename=photo.filename)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_image",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_user_image(picture, username):\n    try:\n        queryuser = {\"username\": username}\n        resultuser = userInfo.find_one(queryuser)\n        if resultuser is None:\n            return \"User not found\", 404\n        pic_id = resultuser[picture]\n        try:\n            pic = fs.get(ObjectId(pic_id))\n            response = make_response(pic.read())",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_info",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_user_info(username):\n    try:\n        queryuser = {\"username\": username}\n        resultuser = userInfo.find_one(queryuser)\n        # print(resultuser)\n        user_information = {\"name\": resultuser[\"name\"], \"bio\": resultuser[\"bio\"]}\n        if resultuser is None:\n            return \"User not found\", 404\n        return jsonify(user_information)\n        # Return result user",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_profiles",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_profiles(location, username):\n    try:\n        queryLocation = {\"name\": location}\n        resultLocation = locationInfo.find_one(queryLocation)\n        if username not in resultLocation[\"group\"]:\n            resultLocation[\"group\"].append(username)\n            filter_criteria = {\"_id\": resultLocation[\"_id\"]}\n            update_operation = {\"$set\": {\"group\": resultLocation[\"group\"]}}\n            result = locationInfo.update_one(filter_criteria, update_operation)\n            # add array for that location for that user",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_places",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_places(username):\n    locations = []\n    try:\n        resultLocation = locationInfo.find({})\n        for c in resultLocation:\n            l = {\n                \"name\": c[\"name\"],\n                \"group\": c[\"group\"],\n                \"category\": c[\"category\"],\n                \"description\": c[\"description\"],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_place_info",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_place_info(place):\n    try:\n        queryloc = {\"name\": place}\n        resultloc = locationInfo.find_one(queryloc)\n        # print(resultuser)\n        loc_information = {\n            \"name\": resultloc[\"name\"],\n            \"group\": resultloc[\"group\"],\n            \"category\": resultloc[\"category\"],\n            \"description\": resultloc[\"description\"],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_loc_image",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_loc_image(picture, place):\n    picture = picture + \".\"\n    try:\n        queryloc = {\"name\": place}\n        resultloc = locationInfo.find_one(queryloc)\n        if resultloc is None:\n            return \"User not found\", 404\n        pic_id = resultloc[picture]\n        try:\n            pic = fs.get(ObjectId(pic_id))",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_swiped_user",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_swiped_user(user, swipedUser, location):\n    print(user, swipedUser, location)\n    try:\n        querySwipedUser = {\"username\": swipedUser}\n        resultSwipedUser = userInfo.find_one(querySwipedUser)\n        # if the swiped user has not swiped right on this user\n        if user not in resultSwipedUser[\"swipedRightGroup\"][location]:\n            queryUser = {\"username\": user}\n            resultUser = userInfo.find_one(queryUser)\n            if swipedUser not in resultUser[\"swipedRightGroup\"][location]:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_matches",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_matches(username):\n    try:\n        queryUser = {\"username\": username}\n        resultUser = userInfo.find_one(queryUser)\n        matches = resultUser[\"matches\"]\n        if len(matches) == 0:\n            return \"no matches found\", 201\n        to_return = []\n        for m in matches:\n            tmp = {\"username\": m[\"username\"], \"location\": m[\"location\"]}",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\nuri = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\napp.config[\"MONGO_URI\"] = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\nmongo = PyMongo(app)\ntry:\n    client = MongoClient(uri)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "uri",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "uri = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\napp.config[\"MONGO_URI\"] = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\nmongo = PyMongo(app)\ntry:\n    client = MongoClient(uri)\nexcept pymongo.errors.ConfigurationError:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app.config[\"MONGO_URI\"]",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app.config[\"MONGO_URI\"] = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\nmongo = PyMongo(app)\ntry:\n    client = MongoClient(uri)\nexcept pymongo.errors.ConfigurationError:\n    print(\n        \"An Invalid URI host error was received. Is your Atlas host name correct in your connection string?\"\n    )",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "mongo",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "mongo = PyMongo(app)\ntry:\n    client = MongoClient(uri)\nexcept pymongo.errors.ConfigurationError:\n    print(\n        \"An Invalid URI host error was received. Is your Atlas host name correct in your connection string?\"\n    )\n    sys.exit(1)\ndb = client.UserInformation\nuserInfo = db.UserInfo",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "db = client.UserInformation\nuserInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "userInfo",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "userInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "locationInfo",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "locationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "fs",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "fs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:\n            return \"Missing 'username' in request body\", 400",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "uri",
+        "kind": 5,
+        "importPath": "insert-place",
+        "description": "insert-place",
+        "peekOfCode": "uri = (\n    \"mongodb+srv://kassmir:Puzzle@orc.ikt6fie.mongodb.net/?retryWrites=true&w=majority\"\n)\ntry:\n    client = MongoClient(uri)\nexcept pymongo.errors.ConfigurationError:\n    print(\n        \"An Invalid URI host error was received. Is your Atlas host name correct in your connection string?\"\n    )\n    sys.exit(1)",
+        "detail": "insert-place",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "insert-place",
+        "description": "insert-place",
+        "peekOfCode": "db = client.UserInformation\nLocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n# put the location name here\ntry:\n    data = {\n        \"name\": \"\",\n        \"group\": [],\n        \"category\": \"\",\n        \"description\": \"\",",
+        "detail": "insert-place",
+        "documentation": {}
+    },
+    {
+        "label": "LocationInfo",
+        "kind": 5,
+        "importPath": "insert-place",
+        "description": "insert-place",
+        "peekOfCode": "LocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n# put the location name here\ntry:\n    data = {\n        \"name\": \"\",\n        \"group\": [],\n        \"category\": \"\",\n        \"description\": \"\",\n        \"address\": \"\",",
+        "detail": "insert-place",
+        "documentation": {}
+    },
+    {
+        "label": "fs",
+        "kind": 5,
+        "importPath": "insert-place",
+        "description": "insert-place",
+        "peekOfCode": "fs = gridfs.GridFS(db)\n# put the location name here\ntry:\n    data = {\n        \"name\": \"\",\n        \"group\": [],\n        \"category\": \"\",\n        \"description\": \"\",\n        \"address\": \"\",\n        \"price\": \"\",",
+        "detail": "insert-place",
+        "documentation": {}
+    }
+]

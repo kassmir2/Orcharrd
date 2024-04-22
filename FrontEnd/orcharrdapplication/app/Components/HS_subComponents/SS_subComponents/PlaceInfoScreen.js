@@ -93,7 +93,7 @@ const PlaceInfoScreen = (props) => {
               ) : (
                 <View style={styles.videoContainer}>
                   <Video
-                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    source={require("../../../../assets/Orcharrd_Loading.mov")}
                     rate={1.0}
                     volume={1.0}
                     isMuted={true}
@@ -116,7 +116,7 @@ const PlaceInfoScreen = (props) => {
               ) : (
                 <View style={styles.videoContainer}>
                   <Video
-                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    source={require("../../../../assets/Orcharrd_Loading.mov")}
                     rate={1.0}
                     volume={1.0}
                     isMuted={true}
@@ -140,7 +140,7 @@ const PlaceInfoScreen = (props) => {
               ) : (
                 <View style={styles.videoContainer}>
                   <Video
-                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    source={require("../../../../assets/Orcharrd_Loading.mov")}
                     rate={1.0}
                     volume={1.0}
                     isMuted={true}
@@ -163,7 +163,7 @@ const PlaceInfoScreen = (props) => {
               ) : (
                 <View style={styles.videoContainer}>
                   <Video
-                    source={require("../../../assets/Orcharrd_Loading.mov")}
+                    source={require("../../../../assets/Orcharrd_Loading.mov")}
                     rate={1.0}
                     volume={1.0}
                     isMuted={true}
