@@ -1,13 +1,13 @@
 import json
-from flask import Flask, jsonify, send_file, render_template, request, make_response
-import pymongo
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
+from flask import Flask, jsonify, send_file, render_template, request, make_response # type: ignore
+import pymongo # type: ignore
+from pymongo.mongo_client import MongoClient # type: ignore
+from pymongo.server_api import ServerApi # type: ignore
 import sys
-from werkzeug.datastructures import ImmutableMultiDict
-from bson import ObjectId
-from flask_pymongo import PyMongo
-import gridfs
+from werkzeug.datastructures import ImmutableMultiDict # type: ignore
+from bson import ObjectId # type: ignore
+from flask_pymongo import PyMongo # type: ignore
+import gridfs # type: ignore
 import base64
 
 app = Flask(__name__)
@@ -36,6 +36,7 @@ fs = gridfs.GridFS(db)
 
 @app.route("/Login", methods=["POST"])
 def Login():
+    print("requested this")
     try:
         # Assuming the request body contains JSON data
         data = json.loads(request.data.decode("UTF-8"))
@@ -325,7 +326,7 @@ def add_swiped_user(user, swipedUser, location):
 
 
 @app.route("/get_matches/<username>", methods=["GET"])
-def get_matches(username):
+def get_name(username):
     try:
         queryUser = {"username": username}
         resultUser = userInfo.find_one(queryUser)
@@ -340,6 +341,22 @@ def get_matches(username):
 
         return jsonify({"matches": to_return})
         # Return result user
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return "Internal Server Error", 500
+
+
+@app.route("/get_name/<username>", methods=["GET"])
+def get_matches(username):
+    try:
+        queryuser = {"username": username}
+        resultuser = userInfo.find_one(queryuser)
+        user_information = {"name": resultuser["name"]}
+        if resultuser is None:
+            return "User not found", 404
+
+        return jsonify(user_information)
 
     except Exception as e:
         print(f"Error: {str(e)}")

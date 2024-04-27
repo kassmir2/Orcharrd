@@ -63,7 +63,6 @@ const ProfileScreen = (props) => {
     <ScrollView style={styles.container}>
       {userInfo && (
         <View style={styles.userInfoContainer}>
-          <Text style={styles.title}>{userInfo.name}</Text>
           <Text style={styles.bio}>Bio: {userInfo.bio}</Text>
         </View>
       )}

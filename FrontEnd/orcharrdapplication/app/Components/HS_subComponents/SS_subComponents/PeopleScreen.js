@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
-//import { Swipeable } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 import SwipeCard from "./Cards";

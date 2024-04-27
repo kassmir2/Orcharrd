@@ -170,7 +170,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:\n            return \"Missing 'username' in request body\", 400\n        username = data[\"username\"]\n        # Use the username in the query",
+        "peekOfCode": "def Login():\n    print(\"requested this\")\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:\n            return \"Missing 'username' in request body\", 400\n        username = data[\"username\"]",
         "detail": "app",
         "documentation": {}
     },
@@ -247,11 +247,20 @@
         "documentation": {}
     },
     {
+        "label": "get_name",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_name(username):\n    try:\n        queryUser = {\"username\": username}\n        resultUser = userInfo.find_one(queryUser)\n        matches = resultUser[\"matches\"]\n        if len(matches) == 0:\n            return \"no matches found\", 201\n        to_return = []\n        for m in matches:\n            tmp = {\"username\": m[\"username\"], \"location\": m[\"location\"]}",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
         "label": "get_matches",
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def get_matches(username):\n    try:\n        queryUser = {\"username\": username}\n        resultUser = userInfo.find_one(queryUser)\n        matches = resultUser[\"matches\"]\n        if len(matches) == 0:\n            return \"no matches found\", 201\n        to_return = []\n        for m in matches:\n            tmp = {\"username\": m[\"username\"], \"location\": m[\"location\"]}",
+        "peekOfCode": "def get_matches(username):\n    try:\n        queryuser = {\"username\": username}\n        resultuser = userInfo.find_one(queryuser)\n        user_information = {\"name\": resultuser[\"name\"]}\n        if resultuser is None:\n            return \"User not found\", 404\n        return jsonify(user_information)\n    except Exception as e:\n        print(f\"Error: {str(e)}\")",
         "detail": "app",
         "documentation": {}
     },
@@ -296,7 +305,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "db = client.UserInformation\nuserInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)",
+        "peekOfCode": "db = client.UserInformation\nuserInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    print(\"requested this\")\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))",
         "detail": "app",
         "documentation": {}
     },
@@ -305,7 +314,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "userInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data",
+        "peekOfCode": "userInfo = db.UserInfo\nlocationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    print(\"requested this\")\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)",
         "detail": "app",
         "documentation": {}
     },
@@ -314,7 +323,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "locationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:",
+        "peekOfCode": "locationInfo = db.LocationInfo\nfs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    print(\"requested this\")\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data",
         "detail": "app",
         "documentation": {}
     },
@@ -323,7 +332,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "fs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:\n            return \"Missing 'username' in request body\", 400",
+        "peekOfCode": "fs = gridfs.GridFS(db)\n@app.route(\"/Login\", methods=[\"POST\"])\ndef Login():\n    print(\"requested this\")\n    try:\n        # Assuming the request body contains JSON data\n        data = json.loads(request.data.decode(\"UTF-8\"))\n        # print(data)\n        # Check if the required fields are present in the JSON data\n        if \"username\" not in data:",
         "detail": "app",
         "documentation": {}
     },

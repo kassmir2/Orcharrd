@@ -46,9 +46,8 @@ const LoginScreen = (props) => {
     setLoading(true);
 
     try {
-      // Your logic to create user profile using your chosen data storage solution
-      // Replace this with your actual API call or storage method
-      //console.log("We got this far");
+      
+      
       const response = await fetch(`${api}/Login`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
@@ -102,7 +101,7 @@ const LoginScreen = (props) => {
           <View style={styles.headerContainer}>
             <Image
               source={require("../../../assets/Orcharrd_Logo.png")}
-              style={{ width: 300, height: 200, marginTop: 40 }}
+              style={{ width: "60%", height: "100%%", marginTop: 40 }}
               resizeMode="stretch"
             />
           </View>
@@ -198,6 +197,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    height: "40%",
+    width: "100%",
   },
   loadingContainer: {
     flex: 1,

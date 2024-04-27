@@ -2,28 +2,97 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { Tabs } from "expo-router/tabs";
 import Icon from "react-native-vector-icons/Ionicons";
+import { connect } from "react-redux";
 
-function Normal() {
+
+const api = process.env.EXPO_PUBLIC_BACKEND_URL;
+function Normal(props) {
+  const { GlobalUsername } = props;
+  const [name, setName] = useState("");
+
+
+
+const fetchName = async () => {
+  try {
+    const response = await fetch(`${api}/get_name/${GlobalUsername}`);
+
+    if (!response.ok) {
+      console.error("Error fetching name:", response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    setName(data.name);
+  } catch (error) {
+    console.error("Error fetching name:", error);
+  }
+};
+useEffect(() => {
+  fetchName();
+}, []);
+
   return (
     <Tabs
-      screenOptions={() => ({
+      screenOptions={({ route }) => ({
         headerTitle: () => (
           <View style={styles.headerContainer}>
-            <Image
-              source={require("../../../assets/Orcharrd_Logo.png")}
-              style={{ width: "30%", height: "180%", marginLeft: 5 }}
-              resizeMode="stretch"
-            />
-            <Text
-              style={{
-                marginLeft: 10,
-                color: "darkgreen",
-                fontWeight: "bold",
-                fontSize: 15,
-              }}
-            >
-              Where Pairs Go To Grow
-            </Text>
+            {route.name === "SS_subComponents" && (
+              <>
+                <Image
+                  source={require("../../../assets/Orcharrd_Logo.png")}
+                  style={{ width: "30%", height: "180%", marginLeft: 5 }}
+                  resizeMode="stretch"
+                />
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    color: "darkgreen",
+                    fontWeight: "bold",
+                    fontSize: 15,
+                  }}
+                >
+                  Swipe
+                </Text>
+              </>
+            )}
+            {route.name === "CS_subComponents" && (
+              <>
+                <Image
+                  source={require("../../../assets/Orcharrd_Logo.png")}
+                  style={{ width: "30%", height: "180%", marginLeft: 5 }}
+                  resizeMode="stretch"
+                />
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    color: "darkgreen",
+                    fontWeight: "bold",
+                    fontSize: 15,
+                  }}
+                >
+                  Matches
+                </Text>
+              </>
+            )}
+            {route.name === "ProfileScreen" && (
+              <>
+                <Image
+                  source={require("../../../assets/Orcharrd_Logo.png")}
+                  style={{ width: "30%", height: "180%", marginLeft: 5 }}
+                  resizeMode="stretch"
+                />
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    color: "darkgreen",
+                    fontWeight: "bold",
+                    fontSize: 15,
+                  }}
+                >
+                  {name}
+                </Text>
+              </>
+            )}
           </View>
         ),
         tabBarActiveTintColor: "green",
@@ -70,7 +139,11 @@ function Normal() {
   );
 }
 
-export default Normal;
+const mapStateToProps = (state) => ({
+  GlobalUsername: state.GlobalUsername,
+});
+
+export default connect(mapStateToProps)(Normal);
 
 const styles = StyleSheet.create({
   headerContainer: {

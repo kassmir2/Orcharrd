@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import { Video } from "expo-av";
 
 import { connect } from "react-redux";
 import { useRouter } from "expo-router";
@@ -70,7 +71,18 @@ const PlacesScreen = (props) => {
           )}
         />
       ) : (
-        <Text style={{ backgroundColor: "black" }}> Loading </Text>
+        <View style={styles.videoContainer}>
+                  <Video
+                    source={require("../../../../assets/Orcharrd_Loading.mov")}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={true}
+                    resizeMode="stretch"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                  />
+                </View>
       )}
     </View>
   );
@@ -105,6 +117,16 @@ const styles = StyleSheet.create({
     borderBottomColor: "#333",
     borderBottomWidth: 1,
     marginTop: 10,
+  },
+  video: {
+    width: 300,
+    height: 400,
+    resizeMode: "cover",
+    marginBottom: 10,
+  },
+  videoContainer: {
+    marginBottom: 20,
+    alignItems: "center",
   },
   
 });
