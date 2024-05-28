@@ -10,9 +10,32 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Video } from "expo-av";
+import useAuth from "../../../hooks/useAuth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
+const signUp = async (email, password) => {
+  try {
+    await firebase.auth().createUserWithEmailAndPassword(email, password);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Login
+const login = async (email, password) => {
+  try {
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 const LoginScreen = (props) => {
+  const {user} = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setIsLoggedIn, setGlobalUsername } = props;
@@ -58,7 +81,7 @@ const LoginScreen = (props) => {
         // Successful login
 
         setLoading(false);
-        setGlobalUsername(username);
+        setGlobalUsername(username.replace(/\s/g, ""));
         setIsLoggedIn(true);
         router.push("Components/HS_subComponents");
 
@@ -75,6 +98,7 @@ const LoginScreen = (props) => {
       }
     } catch (error) {
       console.log(error);
+      alert("Error connecting to server");
       setLoading(false);
       // Handle any errors and display message
     }

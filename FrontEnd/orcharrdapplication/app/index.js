@@ -10,7 +10,7 @@ import {
 import { useRouter } from "expo-router";
 
 const ChoiceScreen = () => {
-  router = useRouter();
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Image
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     marginBottom: 15,
-    marginBottom: 60,
   },
   buttonText: {
     fontSize: 18,

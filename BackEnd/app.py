@@ -36,15 +36,15 @@ fs = gridfs.GridFS(db)
 
 @app.route("/Login", methods=["POST"])
 def Login():
-    print("requested this")
+    print("Logging On")
     try:
         # Assuming the request body contains JSON data
         data = json.loads(request.data.decode("UTF-8"))
-        # print(data)
+        print(data)
         # Check if the required fields are present in the JSON data
         if "username" not in data:
             return "Missing 'username' in request body", 400
-        username = data["username"]
+        username = data["username"].replace(" ", "")
 
         # Use the username in the query
         queryuser = {"username": username}

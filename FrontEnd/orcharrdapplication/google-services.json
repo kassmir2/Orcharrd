@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892558952283",
+    "project_id": "orcharrd-b1747",
+    "storage_bucket": "orcharrd-b1747.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892558952283:android:c9f7cd53bca56952b0bc7e",
+        "android_client_info": {
+          "package_name": "host.exp.exponent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrRTN-BjO0LnTksN5Gxyooi87ORjmBCgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

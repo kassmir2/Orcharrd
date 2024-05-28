@@ -11,6 +11,7 @@ import {
 const api = process.env.EXPO_PUBLIC_BACKEND_URL;
 import { connect } from "react-redux";
 import { Video } from "expo-av";
+import { useRouter } from "expo-router";
 
 const PlaceInfoScreen = (props) => {
   const { GlobalPlace } = props;
@@ -20,6 +21,7 @@ const PlaceInfoScreen = (props) => {
   const [picFour, setPicFour] = useState([]);
   const [locInfo, setLocInfo] = useState(null);
   // Function to fetch image data from the backend
+  router = useRouter();
   const fetchImageData = async (setPic, pic) => {
     try {
       const response = await fetch(

@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Image
 } from "react-native";
 import { connect } from "react-redux";
 import { useRouter } from "expo-router";
@@ -42,6 +43,54 @@ const MatchesScreen = (props) => {
     }
   }, [api, GlobalUsername]);
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      console.log("fetching matches pictures");
+      setIsLoading(true);
+      const updatedMatches = [];
+      for (let i = 0; i < matches.length; i++) {
+        try {
+          const response = await fetch(`${api}/get_image/picOne/${matches[i].username}`);
+          const responseLoc = await fetch(`${api}/get_image_loc/picOne/${matches[i].location}`);
+          if (!response.ok) {
+            console.error("Error fetching user image data:", response.statusText);
+            return;
+          }
+          if (!responseLoc.ok) {
+            console.error("Error fetching location image data:", responseLoc.statusText);
+            return;
+          }
+  
+          const data = await response.blob();
+          const reader = new FileReader();
+  
+          reader.onloadend = () => {
+            const base64data = reader.result.split(",")[1];
+            updatedMatches.push({ ...matches[i], userImage: base64data });
+          };
+  
+          reader.readAsDataURL(data);
+
+          // const dataLoc = await responseLoc.blob();
+          // const readerLoc = new FileReader();
+  
+          // readerLoc.onloadend = () => {
+          //   const base64dataLoc = readerLoc.result.split(",")[1];
+          //   updatedMatches.push({ ...matches[i], locImage: base64dataLoc });
+          // };
+  
+          // readerLoc.readAsDataURL(dataLoc);
+        } catch (error) {
+          console.error("Error fetching image data:", error);
+        }
+      }
+      setMatches(updatedMatches);
+      setIsLoading(false);
+    };
+      fetchImages();
+    
+  }, []);
+
   return (
     <View style={styles.container}>
       {matches.length !== 0 ? (
@@ -59,6 +108,18 @@ const MatchesScreen = (props) => {
               >
                 <Text style={styles.title}>{item.username}</Text>
                 <Text style={styles.subtitle}>{item.location}</Text>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${item.userImage}` }}
+                    style={styles.image}
+                  />
+                </View>
+                {/* <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${item.locImage}` }}
+                    style={styles.image}
+                  />
+                </View> */}
                 <View style={styles.horizontalLine}></View>
               </TouchableOpacity>
             </View>
@@ -82,6 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
+    flexDirection: "row",
   },
   title: {
     fontSize: 20,
@@ -106,6 +168,16 @@ const styles = StyleSheet.create({
     color: "#000000", // Black text
     textAlign: "center",
     marginTop: 20,
+  },
+  imageContainer: {
+    marginBottom: 0,
+    alignItems: "center",
+  },
+  image: {
+    width: 50,
+    height: 70,
+    resizeMode: "cover",
+    marginBottom: 2,
   },
 });
 

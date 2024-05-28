@@ -66,7 +66,7 @@ const ProfileScreen = (props) => {
           <Text style={styles.bio}>Bio: {userInfo.bio}</Text>
         </View>
       )}
-      <View>
+      <View style={styles.container}>
         {picOne.length !== 0 ? ( // Use curly braces here
           <View style={styles.imageContainer}>
             <Image
